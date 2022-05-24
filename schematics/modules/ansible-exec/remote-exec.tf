@@ -53,6 +53,14 @@ resource "null_resource" "ansible-logs" {
 
     depends_on	= [ null_resource.ansible-exec ]
 
+    connection {
+        type = "ssh"
+        user = "root"
+        host = var.IP
+        private_key = var.private_ssh_key
+        timeout = "2m"
+     }
+
     provisioner "local-exec" {
           command = "ssh -o 'StrictHostKeyChecking no' -i ansible/id_rsa root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; timeout 55m /tmp/${var.IP}.while.sh'"
           on_failure = continue
@@ -64,6 +72,14 @@ resource "null_resource" "ansible-logs" {
 resource "null_resource" "ansible-logs1" {
 
     depends_on	= [ null_resource.ansible-logs ]
+
+    connection {
+        type = "ssh"
+        user = "root"
+        host = var.IP
+        private_key = var.private_ssh_key
+        timeout = "2m"
+     }
 
     provisioner "local-exec" {
           command = "ssh -o 'StrictHostKeyChecking no' -i ansible/id_rsa root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; timeout 55m /tmp/${var.IP}.while.sh'"
@@ -94,7 +110,7 @@ resource "null_resource" "ansible-delete-sensitive-data" {
         user = "root"
         host = var.BASTION_FLOATING_IP
         private_key = var.private_ssh_key
-        timeout = "2m"
+        timeout = "1m"
      }
 
     provisioner "remote-exec" {

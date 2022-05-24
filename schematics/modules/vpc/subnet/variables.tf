@@ -13,22 +13,7 @@ variable "SUBNET" {
     description = "Subnet name"
 }
 
-variable "SECURITYGROUP" {
+variable "SECURITY_GROUP" {
     type = string
     description = "Security group name"
-}
-
-variable "ADD_OPEN_PORTS" {
-    type = string
-    description = "New open ports"
-}
-
-variable "OPEN_PORT_MINIMUM" {
-	type		= number
-	description = "(Required, Integer) The TCP port range that includes the minimum bound. Valid values are from 1 to 65535."
-}
-
-variable "OPEN_PORT_MAXIMUM" {
-	type		= number
-	description = "(Required, Integer) The TCP port range that includes the maximum bound. Valid values are from 1 to 65535."
 }
