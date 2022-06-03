@@ -17,5 +17,5 @@ hana_components: "${var.hana_components}"
 kit_saphana_file: "${var.kit_saphana_file}"
 ...
     DOC
-  filename = "../ansible/saphana-vars.yml"
+  filename = "ansible/saphana-vars.yml"
 }

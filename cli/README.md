@@ -5,7 +5,7 @@
 This solution will perform automated deployment of  **Three Tier SAP S/4HANA Stack** on top of **Red Hat Enterprise Linux 7.6 for SAP**.
 
 It contains:  
-- Terraform scripts for deploying two VSIs in an EXISTNG VPC with Subnet and Security Group configs. The VSIs scope: one for the data base instance and one for the application instance.
+- Terraform scripts for deploying two VSIs in an EXISTING VPC with Subnet and Security Group configs. The VSIs scope: one for the data base instance and one for the application instance.
 - Ansible scripts to configure Three Tier SAP S/4HANA primary application server and a HANA 2.0 node.
 Please note that Ansible is started by Terraform and must be available on the same host.
 
@@ -33,25 +33,23 @@ The solution is configured by editing your variables in the file `input.auto.tfv
 Edit your VPC, Subnet, Security group, Hostname, Profile, Image, SSH Keys like so:
 ```shell
 #Infra VPC variables
-REGION			 = "eu-de"
-ZONE			= "eu-de-2"
-VPC			= "sap"                         # EXISTING VPC name
-SECURITYGROUP	= "sap-securitygroup"   # EXISTING Security group name
-SUBNET			= "sap-subnet"               # EXISTING Subnet name
-ADD_OPEN_PORTS = "no"                 # To create new open port/s on the EXISTING SECURITYGROUP, choose 'yes' or 'no' as options
-OPEN_PORT_MINIMUM = "3200"            # This variables will be created only if ADD_OPEN_PORTS = "yes"
-OPEN_PORT_MAXIMUM = "3200"            # This variables will be created only if ADD_OPEN_PORTS = "yes"
-SSH_KEYS		= [ "r010-57bfc315-f9e5-46bf-bf61-d87a24a9ce7a" , "r010-3fcd9fe7-d4a7-41ce-8bb3-d96e936b2c7e" ]
+REGION = "eu-de"
+ZONE = "eu-de-2"
+VPC = "sap" # EXISTING VPC name
+SECURITY_GROUP = "sap-securitygroup" # EXISTING Security group name
+RESOURCE_GROUP = "wes-automation"  # EXISTING Resource group name
+SUBNET = "sap-subnet" # EXISTING Subnet name
+SSH_KEYS = [ "r010-57bfc315-f9e5-46bf-bf61-d87a24a9ce7a" , "r010-3fcd9fe7-d4a7-41ce-8bb3-d96e936b2c7e" ]
 
 # SAP Database VSI variables:
-DB-HOSTNAME     = "is110db"
-DB-PROFILE      = "mx2-16x128" 
-DB-IMAGE        = "ibm-redhat-7-6-amd64-sap-hana-x" # For any manual change in the terraform code, you have to make sure that you use a certified image based on the SAP NOTE: 2927211.
+DB-HOSTNAME = "is110db"
+DB-PROFILE = "mx2-16x128" 
+DB-IMAGE = "ibm-redhat-7-6-amd64-sap-hana-3" # For any manual change in the terraform code, you have to make sure that you use a certified image based on the SAP NOTE: 2927211.
 
 # SAP APPs VSI variables:
-APP-HOSTNAME    = "is110apps"
-APP-PROFILE     = "bx2-4x16"
-APP-IMAGE       = "ibm-redhat-7-6-amd64-sap-applications-x" # For any manual change in the terraform code, you have to make sure that you use a certified image based on the SAP NOTE: 2927211.
+APP-HOSTNAME = "is110apps"
+APP-PROFILE = "bx2-4x16"
+APP-IMAGE = "ibm-redhat-7-6-amd64-sap-applications-3" # For any manual change in the terraform code, you have to make sure that you use a certified image based on the SAP NOTE: 2927211.
 ......
 ```
 
@@ -63,10 +61,8 @@ REGION | The cloud region where to deploy the solution. <br /> The regions and z
 ZONE | The cloud zone where to deploy the solution. <br /> Sample value: eu-de-2.
 VPC | EXISTING VPC name. The list of VPCs is available [here](https://cloud.ibm.com/vpc-ext/network/vpcs)
 SUBNET | EXISTING Subnet name. The list of Subnets is available [here](https://cloud.ibm.com/vpc-ext/network/subnets). 
-SECURITYGROUP | EXISTING Security group name. The list of Security Groups is available [here](https://cloud.ibm.com/vpc-ext/network/securityGroups). 
-ADD_OPEN_PORTS | To create new open port/s on the EXISTING SECURITYGROUP, choose 'yes' or 'no' as options.
-OPEN_PORT_MINIMUM | (Required, Integer) The TCP port range that includes the minimum bound. Valid values are from 1 to 65535.<br /> Default value: 3200
-OPEN_PORT_MAXIMUM | (Required, Integer) The TCP port range that includes the maximum bound. Valid values are from 1 to 65535.<br /> Default value: 3200.
+SECURITY_GROUP | EXISTING Security group name. The list of Security Groups is available [here](https://cloud.ibm.com/vpc-ext/network/securityGroups).
+RESOURCE_GROUP | EXISTING Resource Group for VSIs and Volumes. The list of Resource Groups is available [here](https://cloud.ibm.com/account/resource-groups).
 [DB/APP]-HOSTNAME | The Hostname for the VSI. The hostname must have up to 13 characters as required by SAP.<br> For more information on rules regarding hostnames for SAP systems, check [SAP Note 611361: Hostnames of SAP ABAP Platform servers](https://launchpad.support.sap.com/#/notes/%20611361)
 [DB/APP]-PROFILE | The profile used for the VSI. A list of profiles is available [here](https://cloud.ibm.com/docs/vpc?topic=vpc-profiles).<br> For more information about supported DB/OS and IBM Gen 2 Virtual Server Instances (VSI), check [SAP Note 2927211: SAP Applications on IBM Virtual Private Cloud](https://launchpad.support.sap.com/#/notes/2927211)
 [DB/APP]-IMAGE | The OS image used for the VSI. A list of images is available [here](https://cloud.ibm.com/docs/vpc?topic=vpc-about-images)
@@ -131,7 +127,7 @@ kit_s4hana_export | Path to S/4HANA Installation Export dir | The archives downl
 **Obs***: <br />
 - Sensitive - The variable value is not displayed in your tf files details after terrafrorm plan&apply commands.<br />
 - VOL[number] | The sizes for the disks in GB that are to be attached to the VSI and used by SAP.<br />
-- The following variables should be the same like the bastion ones: REGION, ZONE, VPC, SUBNET, SECURITYGROUP.
+- The following variables should be the same like the bastion ones: REGION, ZONE, VPC, SUBNET, RESOURCE_GROUP, SECURITY_GROUP.
 
 ## VPC Configuration
 
@@ -173,18 +169,19 @@ terraform plan --out plan1
 For apply phase:
 
 ```shell
-terraform apply
+terraform apply "plan1"
 ```
 
 For destroy:
 
 ```shell
 terraform destroy
-# you will be asked for the following sensitive variables as a destroy confirmation phase:
-'ibmcloud_api_key', 'sap_master_password' and 'hana_master_password'.
+# you will be asked for the following sensitive variables as a destroy confirmation phase: 'ibmcloud_api_key', 'sap_master_password' and 'hana_master_password'.
 ```
 
 
 ### Related links:
 
-- [See how to create a BASTION/STORAGE VSI for SAP in IBM Schematics](https://github.ibm.com/workload-eng-services/SAP/tree/dev/ibm-schematics/sapbastionsetup-sch)
+- [See how to create a BASTION/STORAGE VSI for SAP in IBM Schematics](https://github.com/IBM-Cloud/sap-bastion-setup)
+- [Securely Access Remote Instances with a Bastion Host](https://www.ibm.com/cloud/blog/tutorial-securely-access-remote-instances-with-a-bastion-host)
+- [VPNs for VPC overview: Site-to-site gateways and Client-to-site servers.](https://cloud.ibm.com/docs/vpc?topic=vpc-vpn-overview)

@@ -32,5 +32,5 @@ kit_hdbclient_file: "${var.kit_hdbclient_file}"
 kit_s4hana_export: "${var.kit_s4hana_export}"
 ...
     DOC
-  filename = "../ansible/saps4app-vars.yml"
+  filename = "ansible/saps4app-vars.yml"
 }

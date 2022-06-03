@@ -1,93 +1,61 @@
 ---
-- name: Create /usr/sap/kit directory
+- name: Create directories for SAP kit on target
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0777
+  loop:
+    - "{{ s4app_kit }}"
+    - "{{ s4app_kit }}/swpm"
+    - "{{ s4app_kit }}/export"
+
+- name: Gather the package facts for Ansible controller
+  package_facts:
+    manager: auto
+  delegate_to: localhost
+
+- name: Check if rsync package is available on Ansible controller
+  set_fact:
+    rsync_found_controller: true
+  when: "'rsync' in ansible_facts.packages"
+  delegate_to: localhost
+
+- name: Gather the package facts for target
+  package_facts:
+    manager: auto
+
+- name: Check if rsync package is available on target
+  set_fact:
+    rsync_found_target: true
+  when: "'rsync' in ansible_facts.packages"
+
+- name: Copy S4/HANA kit to target using rsync
+  synchronize:
+    src: "{{ item.s4apps_src }}"
+    dest: "{{ item.s4apps_dest }}"
+    checksum: yes
+  loop: "{{ s4apps_kit }}"
+  when: rsync_found_controller is defined and rsync_found_target is defined
+
+- name: Copy S4/HANA kit to target when rsync is not available
+  copy:
+    src: "{{ item.s4apps_src }}"
+    dest: "{{ item.s4apps_dest }}"
+    owner: root
+    group: root
+    mode: 0777
+  loop: "{{ s4apps_kit }}"
+  when: rsync_found_controller is not defined or rsync_found_target is not defined
+
+- name: Recursively change the ownership and permissions on the SAP kit directory
   file:
     path: "{{ s4app_kit }}"
     state: directory
     mode: 0777
-
-- name: Create /usr/sap/trans/kit/swpm directory
-  file:
-    path: "{{ s4app_kit }}/swpm"
-    state: directory
-    mode: 0777
-
-- name: Create /usr/sap/trans/kit/export directory
-  file:
-    path: "{{ s4app_kit }}/export"
-    state: directory
-    mode: 0777
-
-- name: Copy "{{ kit_sapcar_file }}" kit to target
-  copy:
-    src: "{{ kit_sapcar_file }}"
-    dest: "{{ s4app_kit }}/sapcar"
+    recurse: yes
     owner: root
     group: root
-    mode: 0777
-
-- name: Copy "{{ kit_swpm_file }}" kit to target
-  copy:
-    src: "{{ kit_swpm_file }}"
-    dest: "{{ s4app_kit }}/swpm.sar"
-    owner: root
-    group: root
-    mode: 0777
-
-- name: Copy "{{ kit_sapexe_file }}" kit to target
-  copy:
-    src: "{{ kit_sapexe_file }}"
-    dest: "{{ s4app_kit }}/sapexe.sar"
-    owner: root
-    group: root
-    mode: 0777
-
-- name: Copy "{{ kit_sapexedb_file }}" kit to target
-  copy:
-    src: "{{ kit_sapexedb_file }}"
-    dest: "{{ s4app_kit }}/sapexedb.sar"
-    owner: root
-    group: root
-    mode: 0777
-
-- name: Copy "{{ kit_igsexe_file }}" kit to target
-  copy:
-    src: "{{ kit_igsexe_file }}"
-    dest: "{{ s4app_kit }}/igsexe.sar"
-    owner: root
-    group: root
-    mode: 0777
-
-- name: Copy "{{ kit_igshelper_file }}" kit to target
-  copy:
-    src: "{{ kit_igshelper_file }}"
-    dest: "{{ s4app_kit }}/igshelper.sar"
-    owner: root
-    group: root
-    mode: 0777
-
-- name: Copy "{{ kit_saphotagent_file }}" kit to target
-  copy:
-    src: "{{ kit_saphotagent_file }}"
-    dest: "{{ s4app_kit }}/saphotagent.sar"
-    owner: root
-    group: root
-    mode: 0777
-
-- name: Copy "{{ kit_hdbclient_file }}" kit to target
-  copy:
-    src: "{{ kit_hdbclient_file }}"
-    dest: "{{ s4app_kit }}/hdbclient.sar"
-    owner: root
-    group: root
-    mode: 0777
-
-- name: Copy "{{ kit_s4hana_export }}" kit to target
-  copy:
-    src: "{{ kit_s4hana_export }}/"
-    dest: "{{ s4app_kit }}"
-    owner: root
-    group: root
-    mode: 0777
+  when: rsync_found_controller is defined and rsync_found_target is defined
 
 - name: Extract SWPM archive
   command: "{{ s4app_kit }}/sapcar -xf {{ s4app_kit }}/swpm.sar -R {{ s4app_kit }}/swpm"

@@ -7,6 +7,6 @@ resource "null_resource" "sec-exec" {
      command = "sed -i  's/${var.hana_master_password}/xxxxxxxx/' terraform.tfstate"
     }
   provisioner "local-exec" {
-   command = "sleep 20; rm -rf  ../ansible/*-vars.yml"
+   command = "sleep 20; rm -rf ansible/*-vars.yml"
   }
 }
