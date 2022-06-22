@@ -6,13 +6,13 @@
 sap_sid: "S4A"
 sap_ascs_instance_number: "01"
 sap_ci_instance_number: "00"
-sap_master_password: ""
+sap_main_password: ""
 
 #HANA config
 hdb_host: ""
 hdb_sid: "HDB"
 hdb_instance_number: "00"
-hdb_master_password: ""
+hdb_main_password: ""
 # Number of concurrent jobs used to load and/or extract archives to HANA Host
 hdb_concurrent_jobs: "23"
 

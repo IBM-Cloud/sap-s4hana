@@ -5,7 +5,7 @@
 #HANA DB configuration
 hana_sid: "HDB"
 hana_sysno: "00"
-hana_master_password: ""
+hana_main_password: ""
 hana_system_usage: "custom"
 hana_components: "server"
 

@@ -9,7 +9,7 @@ resource "local_file" "db_ansible_saphana-vars" {
 #HANA DB configuration
 hana_sid: "${var.hana_sid}"
 hana_sysno: "${var.hana_sysno}"
-hana_master_password: "${var.hana_master_password}"
+hana_main_password: "${var.hana_main_password}"
 hana_system_usage: "${var.hana_system_usage}"
 hana_components: "${var.hana_components}"
 

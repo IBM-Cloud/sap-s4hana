@@ -10,13 +10,13 @@ resource "local_file" "app_ansible_saps4app-vars" {
 sap_sid: "${var.sap_sid}"
 sap_ascs_instance_number: "${var.sap_ascs_instance_number}"
 sap_ci_instance_number: "${var.sap_ci_instance_number}"
-sap_master_password: "${var.sap_master_password}"
+sap_main_password: "${var.sap_main_password}"
 
 #HANA config
 hdb_host: "${module.db-vsi.PRIVATE-IP}"
 hdb_sid: "${var.hana_sid}"
 hdb_instance_number: "${var.hana_sysno}"
-hdb_master_password: "${var.hana_master_password}"
+hdb_main_password: "${var.hana_main_password}"
 # Number of concurrent jobs used to load and/or extract archives to HANA Host
 hdb_concurrent_jobs: "${var.hdb_concurrent_jobs}"
 
