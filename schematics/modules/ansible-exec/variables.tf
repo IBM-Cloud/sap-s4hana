@@ -17,3 +17,9 @@ variable "private_ssh_key" {
     type = string
     description = "Private ssh key"
 }
+
+locals {
+
+SAP_DEPLOYMENT = "sap-s4hana"
+
+}
