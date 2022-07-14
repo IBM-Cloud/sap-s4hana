@@ -4,7 +4,6 @@
     name: "{{ repo_name }}"
     state: enabled
   loop:
-    - rhel-sap-for-rhel-7-server-e4s-rpms
     - rhel-7-server-rpms
     - rhel-sap-hana-for-rhel-7-server-rpms
     - rhel-7-server-eus-rpms
