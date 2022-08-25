@@ -1,6 +1,6 @@
 ---
 - name: Get available storage devices for HANA VG
-  set_fact: 
+  set_fact:
     data_disk: "{{ data_disk|default([]) + ['/dev/' + device.key] }}"
   when:
      - not device.value.partitions
@@ -36,26 +36,26 @@
     size: "{{ hana_data_lv_size }}"
     opts: -i3 -I256
 
-- name: Create a logical volume for HANA log 
+- name: Create a logical volume for HANA log
   lvol:
     vg: "{{ hana_sid|lower }}_hana_vg"
     lv: "{{ hana_sid|lower }}_hana_log_lv"
     size: "{{ hana_log_lv_size }}"
     opts: -i3 -I64
 
-- name: Create a logical volume for HANA shared 
+- name: Create a logical volume for HANA shared
   lvol:
     vg: "{{ hana_sid|lower }}_hana_vg"
     lv: "{{ hana_sid|lower }}_hana_shared_lv"
     size: "{{ hana_shared_lv_size }}"
     opts: -i3
 
-- name: Create a logical volume for /usr/sap 
+- name: Create a logical volume for /usr/sap
   lvol:
     vg: "{{ hana_sid|lower }}_hana_vg"
     lv: "{{ hana_sid|lower }}_sap_lv"
     size: "{{ sap_lv_size }}"
-    opts: -i3    
+    opts: -i3
 
 - name: Create a swap filesystem
   filesystem:
@@ -88,8 +88,13 @@
     regexp: "^/dev/{{ hana_sid|lower }}_hana_vg/{{ hana_sid|lower }}_swap_lv"
     line: "/dev/{{ hana_sid|lower }}_hana_vg/{{ hana_sid|lower }}_swap_lv  swap  swap  defaults  0 0"
 
+- name: Check the current swap size
+  set_fact:
+    hana_vm_swap: "{{ ansible_swaptotal_mb }}"
+
 - name: Mount swap volume
   command: swapon -a
+  when: hana_vm_swap == 0
 
 - name: Mount /hana/data and add it to /etc/fstab
   mount:

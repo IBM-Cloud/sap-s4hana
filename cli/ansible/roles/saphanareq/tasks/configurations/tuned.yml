@@ -10,6 +10,12 @@
     state: started
     enabled: yes
 
+- name: Check if sap-hana profile was already activated
+  command: "tuned-adm active"
+  register: tuned_active
+  changed_when: False
+
 - name: Select sap-hana profile for tuned
   command: /usr/sbin/tuned-adm profile sap-hana
+  when: "'sap_hana' not in tuned_active.stdout"
 ...

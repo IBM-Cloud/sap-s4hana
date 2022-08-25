@@ -1,0 +1,17 @@
+---
+- name: Start and enable saptune service
+  service:
+    name: saptune
+    state: started
+    enabled: yes
+
+- name: Check if HANA profile was already set
+  command: "saptune status"
+  register: hana_profile
+  changed_when: False
+  failed_when: hana_profile.rc != 0 and hana_profile.rc != 3
+
+- name: Select HANA profile for saptune
+  command: /usr/sbin/saptune solution apply HANA
+  when: "'HANA' not in hana_profile.stdout"
+...

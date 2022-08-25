@@ -12,3 +12,8 @@ variable "private_ssh_key" {
     type = string
     description = "Private ssh key"
 }
+
+variable "SECURITY_GROUP" {
+    type = string
+    description = "Security group name"
+}

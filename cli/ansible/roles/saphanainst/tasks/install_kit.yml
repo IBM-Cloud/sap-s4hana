@@ -16,14 +16,22 @@
   when: "'rsync' in ansible_facts.packages"
   delegate_to: localhost
 
-- name: Gather the package facts for target
+- name: Gather the package facts for Red Hat target
   package_facts:
     manager: auto
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: Gather the packages for Suse target # noqa 305
+  shell:  zypper search -i --match-exact rsync
+  args:
+    warn: false
+  register: rsync_search_result
+  when: ansible_facts['os_family'] == "Suse"
 
 - name: Check if rsync package is available on target
   set_fact:
     rsync_found_target: true
-  when: "'rsync' in ansible_facts.packages"
+  when: ansible_facts['os_family'] == "RedHat" and "'rsync' in ansible_facts.packages" or ansible_facts['os_family'] == "Suse" and rsync_search_result.rc == 0
 
 - name: Copy "{{ kit_saphana_file }}" kit to target using rsync
   synchronize:

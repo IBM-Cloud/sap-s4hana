@@ -46,13 +46,6 @@ resource "null_resource" "ansible-exec" {
       ]
     }
 
-    provisioner "remote-exec" {
-        inline = [
-         "chmod 600 /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/id_rsa",
-         "ssh-keyscan -H ${var.IP} >> ~/.ssh/known_hosts",
-       ]
-    }
-
     provisioner "local-exec" {
           command = "ssh -o 'StrictHostKeyChecking no' -i ansible/id_rsa root@${var.BASTION_FLOATING_IP} 'nohup ansible-playbook --private-key /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/id_rsa -i ${var.IP}, /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/${var.PLAYBOOK} > /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/ansible.${var.IP}.log 2>&1 &'"
     }
@@ -62,14 +55,6 @@ resource "null_resource" "ansible-exec" {
 resource "null_resource" "check-ansible" {
 
     depends_on	= [ null_resource.ansible-exec ]
-
-    connection {
-        type = "ssh"
-        user = "root"
-        host = var.IP
-        private_key = var.private_ssh_key
-        timeout = "2m"
-     }
 
     provisioner "local-exec" {
           command = "ssh -o 'StrictHostKeyChecking no' -i ansible/id_rsa root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; timeout 10m /tmp/${var.IP}.check.ansible.sh'"
@@ -82,41 +67,23 @@ resource "null_resource" "ansible-logs" {
 
     depends_on	= [ null_resource.check-ansible ]
 
-    connection {
-        type = "ssh"
-        user = "root"
-        host = var.IP
-        private_key = var.private_ssh_key
-        timeout = "2m"
-     }
-
     provisioner "local-exec" {
           command = "ssh -o 'StrictHostKeyChecking no' -i ansible/id_rsa root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; timeout 55m /tmp/${var.IP}.while.sh'"
           on_failure = continue
     }
 
 }
-
 
 resource "null_resource" "ansible-logs1" {
 
     depends_on	= [ null_resource.ansible-logs ]
 
-    connection {
-        type = "ssh"
-        user = "root"
-        host = var.IP
-        private_key = var.private_ssh_key
-        timeout = "2m"
-     }
-
     provisioner "local-exec" {
           command = "ssh -o 'StrictHostKeyChecking no' -i ansible/id_rsa root@${var.BASTION_FLOATING_IP} 'export IP=${var.IP}; export SAP_DEPLOYMENT=${local.SAP_DEPLOYMENT}; timeout 55m /tmp/${var.IP}.while.sh'"
           on_failure = continue
     }
 
 }
-
 
 resource "null_resource" "ansible-errors" {
 
@@ -128,7 +95,6 @@ resource "null_resource" "ansible-errors" {
     }
 
 }
-
 
 resource "null_resource" "ansible-delete-sensitive-data" {
 
@@ -144,6 +110,5 @@ resource "null_resource" "ansible-delete-sensitive-data" {
 
     provisioner "remote-exec" {
         inline = [ "rm -rf /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}" ]
-     }
-
+     } 
 }

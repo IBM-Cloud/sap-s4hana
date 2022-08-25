@@ -1,14 +1,19 @@
+module "pre-init" {
+  source		= "./modules/pre-init"
+}
 
 module "precheck-ssh-exec" {
   source		= "./modules/precheck-ssh-exec"
+  depends_on	= [ module.pre-init ]
   BASTION_FLOATING_IP = var.BASTION_FLOATING_IP
   private_ssh_key = var.private_ssh_key
   HOSTNAME		= var.DB-HOSTNAME
+  SECURITY_GROUP = var.SECURITY_GROUP
 }
 
 module "vpc-subnet" {
-  depends_on	= [ module.precheck-ssh-exec ]
   source		= "./modules/vpc/subnet"
+  depends_on	= [ module.precheck-ssh-exec ]
   ZONE			= var.ZONE
   VPC			= var.VPC
   SECURITY_GROUP = var.SECURITY_GROUP
@@ -16,8 +21,8 @@ module "vpc-subnet" {
 }
 
 module "db-vsi" {
-  depends_on	= [ module.precheck-ssh-exec ]
   source		= "./modules/db-vsi"
+  depends_on	= [ module.precheck-ssh-exec ]
   ZONE			= var.ZONE
   VPC			= var.VPC
   SECURITY_GROUP = var.SECURITY_GROUP

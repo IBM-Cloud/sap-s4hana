@@ -1,0 +1,17 @@
+---
+- name: Start and enable saptune service
+  service:
+    name: saptune
+    state: started
+    enabled: yes
+
+- name: Check if NETWEAVER profile was already set
+  command: saptune status
+  register: netweaver_profile
+  changed_when: False
+  failed_when: netweaver_profile.rc != 0 and netweaver_profile.rc != 3
+
+- name: Select NETWEAVER profile for saptune
+  command: /usr/sbin/saptune solution apply NETWEAVER
+  when: "'NETWEAVER' not in netweaver_profile.stdout"
+...

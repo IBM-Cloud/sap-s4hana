@@ -33,16 +33,21 @@ saphana_required_package_groups:
   - "@base"
 
 saphana_required_configurations:
-  - "update_os"
-  - "reqpkggroups"
+  - "repository_RedHat"
+  - "update_RedHat7"
+  - "reqpkggroups_RedHat"
   - "reqpkg"
+  - "hostname_fix_RedHat"
   - "hostname"
   - "filesystems"
   - "tuned"
   - "SELinux"
+  - "firewalld"
   - "symlinks"
   - "abrtd"
   - "kdump"
   - "limits"
+  - "tmpfiles"
   - "kernel_RedHat7"
+  - "reboot"
 ...

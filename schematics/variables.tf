@@ -86,7 +86,11 @@ variable "DB-PROFILE" {
 variable "DB-IMAGE" {
 	type		= string
 	description = "DB VSI OS Image"
-	default		= "ibm-redhat-7-6-amd64-sap-hana-3"
+	default		= "ibm-redhat-8-4-amd64-sap-hana-2"
+	validation {
+		condition     = length(regexall("^(ibm-redhat-7-6-amd64-sap-hana|ibm-redhat-8-4-amd64-sap-hana|ibm-sles-15-3-amd64-sap-hana)-[0-9][0-9]*", var.DB-IMAGE)) > 0
+		error_message = "The OS SAP DB-IMAGE must be one of  \"ibm-sles-15-3-amd64-sap-hana-x\", \"ibm-redhat-8-4-amd64-sap-hana-x\" or \"ibm-redhat-7-6-amd64-sap-hana-x\"."
+ }
 }
 
 variable "APP-HOSTNAME" {
@@ -107,7 +111,11 @@ variable "APP-PROFILE" {
 variable "APP-IMAGE" {
 	type		= string
 	description = "VSI OS Image"
-	default		= "ibm-redhat-7-6-amd64-sap-applications-3"
+	default		= "ibm-redhat-8-4-amd64-sap-applications-2"
+	validation {
+			condition     = length(regexall("^(ibm-redhat-7-6-amd64-sap-applications|ibm-redhat-8-4-amd64-sap-applications|ibm-sles-15-3-amd64-sap-applications)-[0-9][0-9]*", var.APP-IMAGE)) > 0
+			error_message = "The OS SAP APP-IMAGE must be one of \"ibm-redhat-7-6-amd64-sap-applications-x\" ,  \"ibm-redhat-8-4-amd64-sap-applications-x\" or \"ibm-sles-15-3-amd64-sap-applications-x\"."
+ }
 }
 
 variable "hana_sid" {

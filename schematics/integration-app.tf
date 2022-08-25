@@ -8,6 +8,7 @@ resource "local_file" "app_ansible_saps4app-vars" {
 
 #SAP system configuration
 sap_sid: "${var.sap_sid}"
+app_profile: "${var.APP-PROFILE}"
 sap_ascs_instance_number: "${var.sap_ascs_instance_number}"
 sap_ci_instance_number: "${var.sap_ci_instance_number}"
 sap_main_password: "${var.sap_main_password}"

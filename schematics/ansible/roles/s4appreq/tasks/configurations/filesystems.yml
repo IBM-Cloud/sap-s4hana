@@ -1,6 +1,6 @@
 ---
 - name: Get available storage devices for swap
-  set_fact: 
+  set_fact:
     swap_disk: "{{ swap_disk|default([]) + [device.key] }}"
   when:
      - not device.value.partitions
@@ -23,7 +23,7 @@
     pesize: "32"
 
 - name: Get available storage devices for SAP instance
-  set_fact: 
+  set_fact:
     sap_disk: "{{ sap_disk|default([]) + [device.key] }}"
   when:
      - not device.value.partitions
@@ -44,6 +44,21 @@
     vg: "{{ sap_sid|lower }}_app_vg"
     pvs: "/dev/{{ sap_disk[0] }}"
     pesize: "32"
+
+- name: Get the RAM size
+  set_fact:
+    app_ram: "{{ app_profile.split('-')[1].split('x')[1] }}"
+
+- name: Get the swap logical volume size for RAM lower than 32 GB
+  set_fact:
+    swap_lv_size: "{{ app_ram | int * 2 }}g"
+  when: app_ram | int < 32
+
+- name: Get the swap logical volume size for RAM higher than 32 GB
+  set_fact:
+    swap_lv_size: "{{ item.size }}g"
+  loop: "{{ swap_lv }}"
+  when: (app_ram | int > 32) and (app_ram | int >= item.ram_min) and (app_ram | int <= item.ram_min)
 
 - name: Create a logical volume for swap
   lvol:
@@ -73,7 +88,7 @@
   lvol:
     vg: "{{ sap_sid|lower }}_app_vg"
     lv: "{{ sap_sid|lower }}_saptrans_lv"
-    size: "{{ saptrans_lv_size }}" 
+    size: "{{ saptrans_lv_size }}"
 
 - name: Create a swap filesystem
   filesystem:
@@ -106,8 +121,13 @@
     regexp: "^/dev/{{ sap_sid|lower }}_swap_vg/{{ sap_sid|lower }}_swap_lv"
     line: "/dev/{{ sap_sid|lower }}_swap_vg/{{ sap_sid|lower }}_swap_lv  swap  swap  defaults  0 0"
 
+- name: Check the current swap size
+  set_fact:
+    sap_vm_swap: "{{ ansible_swaptotal_mb }}"
+
 - name: Mount swap volume
   command: swapon -a
+  when: sap_vm_swap == 0
 
 - name: Mount /usr/sap and add it to /etc/fstab
   mount:

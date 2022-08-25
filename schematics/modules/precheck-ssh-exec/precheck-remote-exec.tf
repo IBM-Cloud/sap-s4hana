@@ -1,4 +1,6 @@
 resource "null_resource" "check-bastion-resources" {
+  
+        depends_on = [ ibm_is_security_group_rule.inbound-sg-sch-ssh-rule ]
 
         connection {
             type = "ssh"

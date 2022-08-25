@@ -3,7 +3,7 @@
 hana_disk_size: "500.00 GB"
 
 #Logical volume size config
-swap_lv_size: "20g"
+swap_lv_size: "2g"
 hana_data_lv_size: "700g"
 hana_log_lv_size: "250g"
 hana_shared_lv_size: "250g"

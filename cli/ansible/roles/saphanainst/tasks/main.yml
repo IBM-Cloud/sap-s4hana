@@ -7,8 +7,14 @@
       src: hanaconfig.cfg
       dest: "{{ hana_kit }}/hanaconfig.cfg"
 
-- name: Start SAP HANA DB installation
+- name: Check if HANA DB was already installed
+  stat:
+    path: "/hana/shared/{{ hana_sid|upper }}/exe/linuxx86_64/hdb"
+  register: hdb_install_status
+
+- name: Start SAP HANA DB installation # noqa 305
   shell: "{{ hana_kit }}/DATA_UNITS/HDB_SERVER_LINUX_X86_64/hdblcm --configfile={{ hana_kit }}/hanaconfig.cfg -b"
+  when: not hdb_install_status.stat.exists
 
 - name: Cleanup
   file:

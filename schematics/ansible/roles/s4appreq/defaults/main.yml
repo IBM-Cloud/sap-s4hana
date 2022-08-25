@@ -4,9 +4,70 @@ sap_disk_size: "128.00 GB"
 swap_disk_size: "40.00 GB"
 
 #Logical volume size config
-swap_lv_size: "30g"
+# swap_lv_size: "30g"
 usrsap_lv_size: "5g"
 sap_lv_size: "20g"
 sapmnt_lv_size: "20g"
 saptrans_lv_size: "50g"
+
+# SWAP size GB 
+# SAP note 1597355
+# Commented until terraform code update
+# swap_lv:
+#   - size: 64
+#     ram_min: 32
+#     ram_max: 63
+#   - size: 96
+#     ram_min: 64
+#     ram_max: 127
+#   - size: 128
+#     ram_min: 128
+#     ram_max: 255
+#   - size: 160
+#     ram_min: 256
+#     ram_max: 511
+#   - size: 192
+#     ram_min: 512
+#     ram_max: 1023
+#   - size: 224
+#     ram_min: 1024
+#     ram_max: 2047
+#   - size: 256
+#     ram_min: 2048
+#     ram_max: 4095
+#   - size: 288
+#     ram_min: 4096
+#     ram_max: 8191
+#   - size: 320
+#     ram_min: 8192
+#     ram_max: 20000
+
+swap_lv:
+  - size: 38
+    ram_min: 32
+    ram_max: 63
+  - size: 38
+    ram_min: 64
+    ram_max: 127
+  - size: 38
+    ram_min: 128
+    ram_max: 255
+  - size: 38
+    ram_min: 256
+    ram_max: 511
+  - size: 38
+    ram_min: 512
+    ram_max: 1023
+  - size: 224
+    ram_min: 1024
+    ram_max: 2047
+  - size: 38
+    ram_min: 2048
+    ram_max: 4095
+  - size: 288
+    ram_min: 4096
+    ram_max: 8191
+  - size: 38
+    ram_min: 8192
+    ram_max: 20000
 ...

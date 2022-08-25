@@ -2,5 +2,5 @@
 - name: Import requierd package groups
   dnf:
     state: present
-    name: "{{ saphana_required_package_groups }}" 
+    name: "{{ saphana_required_package_groups }}"
 ...
