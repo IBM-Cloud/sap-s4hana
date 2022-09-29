@@ -22,7 +22,7 @@ RESOURCE_GROUP = "wes-automation"
 # EXISTING Resource group, previously created by the user. The list of available Resource Groups: https://cloud.ibm.com/account/resource-groups
 # Example: RESOURCE_GROUP = "wes-automation"
 
-SUBNET = "ic4sap-subnet"
+SUBNET = "ic4sap-ed2-subnet"
 # EXISTING Subnet in the same region and zone as the VSI, previously created by the user. The list of available Subnets: https://cloud.ibm.com/vpc-ext/network/subnets
 # Example: SUBNET = "ic4sap-subnet"
 
