@@ -11,7 +11,7 @@
   loop_control:
     loop_var: repo_name
 
-- name: Update all packages # noqa 403
+- name: Update all packages
   yum:
     name: '*'
     state: latest

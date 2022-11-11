@@ -58,7 +58,7 @@
   set_fact:
     swap_lv_size: "{{ item.size }}g"
   loop: "{{ swap_lv }}"
-  when: (app_ram | int > 32) and (app_ram | int >= item.ram_min) and (app_ram | int <= item.ram_min)
+  when: (app_ram | int >= 32) and (app_ram | int >= item.ram_min) and (app_ram | int <= item.ram_min)
 
 - name: Create a logical volume for swap
   lvol:

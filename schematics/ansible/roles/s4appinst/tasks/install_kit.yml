@@ -25,7 +25,7 @@
     manager: auto
   when: ansible_facts['os_family'] == "RedHat"
 
-- name: Gather the packages for Suse target # noqa 305
+- name: Gather the packages for Suse target
   shell: zypper search -i --match-exact rsync
   args:
     warn: false
