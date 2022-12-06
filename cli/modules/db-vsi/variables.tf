@@ -52,8 +52,3 @@ variable "VOL_PROFILE" {
     type = string
     description = "Volume profile"
 }
-
-variable "VOL_IOPS" {
-    type = string
-    description = "Volume IOPS"
-}

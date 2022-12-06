@@ -33,8 +33,7 @@ module "db-vsi" {
   RESOURCE_GROUP = var.RESOURCE_GROUP
   SSH_KEYS		= var.SSH_KEYS
   VOLUME_SIZES	= [ "500" , "500" , "500" ]
-  VOL_PROFILE	= "custom"
-  VOL_IOPS		= "10000"
+  VOL_PROFILE	= "10iops-tier"
 }
 
 module "app-vsi" {

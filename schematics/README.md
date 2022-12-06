@@ -21,7 +21,7 @@ SAP S/4HANA installation media used for this deployment is the default one for *
 The VSIs are deployed with one of the following Operating Systems for DB server: Suse Linux Enterprise Server 15 SP 3 for SAP HANA (amd64), Red Hat Enterprise Linux 8.4 for SAP HANA (amd64) or Red Hat Enterprise Linux 7.6 for SAP HANA (amd64) and with one of the following Operating Systems for APP server: Suse Enterprise Linux 1 SP3 for SAP Applications (amd64), Red Hat Enterprise Linux 8.4 for SAP Applications (amd64), Red Hat Enterprise Linux 7.6 for SAP Applications (amd64). The SSH keys are configured to allow root user access. The following storage volumes are creating during the provisioning:
 
 HANA DB VSI Disks:
-- 3 x 500 GB disks with 10000 IOPS - DATA
+- 3 x 500 GB disks with 10 IOPS / GB - DATA
 
 SAP APPs VSI Disks:
 - 1x 40 GB disk with 10 IOPS / GB - SWAP

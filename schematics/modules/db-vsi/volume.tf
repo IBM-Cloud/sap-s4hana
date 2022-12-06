@@ -6,5 +6,4 @@ count = length( var.VOLUME_SIZES )
   resource_group = data.ibm_resource_group.group.id
   capacity	= var.VOLUME_SIZES[count.index]
   profile	= var.VOL_PROFILE
-  iops		= var.VOL_IOPS
 }
