@@ -54,11 +54,19 @@
     swap_lv_size: "{{ app_ram | int * 2 }}g"
   when: app_ram | int < 32
 
-- name: Get the swap logical volume size for RAM higher than 32 GB
+- name: Get the swap logical volume size for RAM higher than 32 GB and lower than 8192
   set_fact:
-    swap_lv_size: "{{ item.size }}g"
+    swap_lv_size: "{{ data_swap.size }}g"
   loop: "{{ swap_lv }}"
-  when: (app_ram | int >= 32) and (app_ram | int >= item.ram_min) and (app_ram | int <= item.ram_min)
+  loop_control:
+    loop_var: data_swap
+  when: (app_ram | int >= 32) and (app_ram | int < 8192) and (app_ram | int >= data_swap.ram_min) and (app_ram | int <= data_swap.ram_max)
+
+- name: Get the swap logical volume size for RAM higher than 8192
+  set_fact:
+    # swap_lv_size: "320g"
+    swap_lv_size: "32g"
+  when: app_ram | int >= 8192
 
 - name: Create a logical volume for swap
   lvol:
