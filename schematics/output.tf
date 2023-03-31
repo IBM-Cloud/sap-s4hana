@@ -6,6 +6,10 @@ output "DB-PRIVATE-IP" {
   value		= module.db-vsi.PRIVATE-IP
 }
 
+output "DB-STORAGE-LAYOUT" {
+  value = module.db-vsi.STORAGE-LAYOUT
+}
+
 output "APP-HOSTNAME" {
   value		= module.app-vsi.HOSTNAME
 }

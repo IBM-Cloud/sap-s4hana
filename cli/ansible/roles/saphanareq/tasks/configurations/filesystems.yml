@@ -1,126 +1,116 @@
 ---
-- name: Get available storage devices for HANA VG
-  set_fact:
-    data_disk: "{{ data_disk|default([]) + ['/dev/' + device.key] }}"
-  when:
-     - not device.value.partitions
-     - not device.value.holders
-     - device.key is search('vd')
-     - device.value.size == hana_disk_size
-  loop: "{{ ansible_devices | dict2items }}"
-  loop_control:
-    loop_var: device
+# Storage sizing
+# https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-intel-vs-vpc (Last updated 2022-01-28)
+# https://cloud.ibm.com/docs/sap?topic=sap-storage-design-considerations#hana-iaas-mx2-16x128-32x256-configure (Last updated 2022-05-19)
+# https://cloud.ibm.com/docs/sap?topic=sap-storage-design-considerations#hana-iaas-mx2-48x384-configure (Last updated 2022-05-19)
+# SAP Notes:
+# - 2779331 - HANA services use large SWAP memory (v5)
 
-- name: Check if the required storage device for HANA VG is found
+- name: Check if the JSON file for SAP HANA storage configuration is available on Ansible controller
+  stat:
+    path: "{{ playbook_dir }}/hana_volume_layout.json"
+  register: json_storage_file_status
+  delegate_to: localhost
+
+- name: Fail if the JSON file is missing
   fail:
-    msg: "Could not find the required free {{ hana_disk_size }} storage devices for HANA VG"
-  when:  data_disk|length < 3
+    msg: "The file {{ playbook_dir }}/hana_volume_layout.json is missing."
+  when: not json_storage_file_status.stat.exists
 
-- name: Create a volume group for HANA DB
+- name: Get the JSON file content
+  shell: "cat {{ playbook_dir }}/hana_volume_layout.json"
+  register: result
+  changed_when: false
+  when: json_storage_file_status.stat.exists
+  delegate_to: localhost
+
+- name: Save the JSON data to a variable as a fact
+  set_fact:
+    jsondata: "{{ result.stdout | from_json }}"
+
+- name: Check if the chosen profile is certified for HANA VSIs
+  fail:
+    msg: "The chosen profile {{ hana_profile }} is not certified for HANA VSIs."
+  when: hana_profile not in jsondata.profiles.keys()
+
+- name: Detect the appropriate disks to be configured
+  set_fact:
+    final_storage: "{{ [jsondata, ansible_devices, hana_profile] | list | storagedetails }}"
+
+- name: Get the missing disks
+  fail:
+    msg: "{{ final_storage }}"
+  when: final_storage is not mapping
+
+- name: Create the volume groups
   lvg:
-    vg: "{{ hana_sid|lower }}_hana_vg"
-    pvs: "{{ data_disk }}"
-    pesize: "32"
+    vg: "{{ hana_sid | lower }}_{{ stg_details.value.lvm.vg.vg_name }}"
+    pvs: "{{ stg_details.value.device | join(',') }}"
+    pesize: "{{ stg_details.value.lvm.vg.pe_size_MB }}"
+  loop: "{{ final_storage | dict2items }}"
+  loop_control:
+    loop_var: stg_details
+  when: '"lvm" in stg_details.value.keys()'
 
-- name: Create a logical volume for swap
+- name: Create the logical volumes
   lvol:
-    vg: "{{ hana_sid|lower }}_hana_vg"
-    lv: "{{ hana_sid|lower }}_swap_lv"
-    size: "{{ swap_lv_size }}"
-    opts: -i3
+    vg: "{{ hana_sid|lower }}_{{ lvm_data[0]['vg_name'] }}"
+    lv: "{{ hana_sid|lower }}_{{ lvm_data[0]['lv_name'] }}"
+    size: "{{ lvm_data[0]['lv_size'] }}"
+    opts: "-i{{ lvm_data[0]['lv_stripes'] }} -I{{ lvm_data[0]['lv_stripe_size'] }}"
+    shrink: false
+  loop: "{{ final_storage | lvmdata }}"
+  loop_control:
+    loop_var: lvm_data
 
-- name: Create a logical volume for HANA data
-  lvol:
-    vg: "{{ hana_sid|lower }}_hana_vg"
-    lv: "{{ hana_sid|lower }}_hana_data_lv"
-    size: "{{ hana_data_lv_size }}"
-    opts: -i3 -I256
+- name: Create the partitions
+  parted:
+    device: "{{ part[0] }}"
+    number: 1
+    label: gpt
+    state: present
+  loop: "{{ final_storage | partitionlist }}"
+  loop_control:
+    loop_var: part
 
-- name: Create a logical volume for HANA log
-  lvol:
-    vg: "{{ hana_sid|lower }}_hana_vg"
-    lv: "{{ hana_sid|lower }}_hana_log_lv"
-    size: "{{ hana_log_lv_size }}"
-    opts: -i3 -I64
+- name: Create the filesystems
+  filesystem: 
+    fstype: "{{ fs_data[0]['fs_type'] }}"
+    dev: "{{ fs_data[0]['fs_device'] }}"
+    opts: "{{ fs_data[0]['fs_options'] }}"
+  loop: "{{ [final_storage, hana_sid | lower] | filesystemdata }}"
+  loop_control:
+    loop_var: fs_data
 
-- name: Create a logical volume for HANA shared
-  lvol:
-    vg: "{{ hana_sid|lower }}_hana_vg"
-    lv: "{{ hana_sid|lower }}_hana_shared_lv"
-    size: "{{ hana_shared_lv_size }}"
-    opts: -i3
+- name: Mount the filesystems
+  mount:
+    path: "{{ mp_data[0]['mp'] }}"
+    src: "{{ mp_data[0]['mount_source'] }}"
+    fstype: "{{ mp_data[0]['fs_type'] }}"
+    state: mounted
+  loop: "{{ [final_storage, hana_sid | lower] | filesystemdata }}"
+  loop_control:
+    loop_var: mp_data
+  when:  mp_data[0]['mp'] != None
 
-- name: Create a logical volume for /usr/sap
-  lvol:
-    vg: "{{ hana_sid|lower }}_hana_vg"
-    lv: "{{ hana_sid|lower }}_sap_lv"
-    size: "{{ sap_lv_size }}"
-    opts: -i3
+- name: Get SWAP LV name
+  set_fact:
+    swap_lv: "{{ swap_data[0]['fs_device'] }}"
+  loop: "{{ [final_storage, hana_sid | lower] | filesystemdata }}"
+  loop_control:
+    loop_var: swap_data
 
-- name: Create a swap filesystem
-  filesystem:
-    fstype: swap
-    dev: "/dev/{{ hana_sid|lower }}_hana_vg/{{ hana_sid|lower }}_swap_lv"
-
-- name: Create filesystem for /hana/data
-  filesystem:
-    fstype: xfs
-    dev: "/dev/{{ hana_sid|lower }}_hana_vg/{{ hana_sid|lower }}_hana_data_lv"
-
-- name: Create filesystem for /hana/log
-  filesystem:
-    fstype: xfs
-    dev: "/dev/{{ hana_sid|lower }}_hana_vg/{{ hana_sid|lower }}_hana_log_lv"
-
-- name: Create filesystem for /hana/shared
-  filesystem:
-    fstype: xfs
-    dev: "/dev/{{ hana_sid|lower }}_hana_vg/{{ hana_sid|lower }}_hana_shared_lv"
-
-- name: Create filesystem for /usr/sap
-  filesystem:
-    fstype: xfs
-    dev: "/dev/{{ hana_sid|lower }}_hana_vg/{{ hana_sid|lower }}_sap_lv"
-
-- name: Add swap device to /etc/fstab
-  lineinfile:
-    path: /etc/fstab
-    regexp: "^/dev/{{ hana_sid|lower }}_hana_vg/{{ hana_sid|lower }}_swap_lv"
-    line: "/dev/{{ hana_sid|lower }}_hana_vg/{{ hana_sid|lower }}_swap_lv  swap  swap  defaults  0 0"
-
-- name: Check the current swap size
+- name: Check the current SWAP size
   set_fact:
     hana_vm_swap: "{{ ansible_swaptotal_mb }}"
 
-- name: Mount swap volume
-  command: swapon -a
+- name: Mount SWAP volume
+  command: "swapon -av {{ swap_lv }}"
   when: hana_vm_swap == 0
 
-- name: Mount /hana/data and add it to /etc/fstab
-  mount:
-    path: "/hana/data"
-    src: "/dev/{{ hana_sid|lower }}_hana_vg/{{ hana_sid|lower }}_hana_data_lv"
-    fstype: xfs
-    state: mounted
-
-- name: Mount /hana/log and add it to /etc/fstab
-  mount:
-    path: "/hana/log"
-    src: "/dev/{{ hana_sid|lower }}_hana_vg/{{ hana_sid|lower }}_hana_log_lv"
-    fstype: xfs
-    state: mounted
-
-- name: Mount /hana/shared and add it to /etc/fstab
-  mount:
-    path: "/hana/shared"
-    src: "/dev/{{ hana_sid|lower }}_hana_vg/{{ hana_sid|lower }}_hana_shared_lv"
-    fstype: xfs
-    state: mounted
-
-- name: Mount /usr/sap and add it to /etc/fstab
-  mount:
-    path: "/usr/sap"
-    src: "/dev/{{ hana_sid|lower }}_hana_vg/{{ hana_sid|lower }}_sap_lv"
-    fstype: xfs
-    state: mounted
+- name: Add SWAP device to /etc/fstab
+  lineinfile:
+    path: /etc/fstab
+    regexp: "^{{ swap_lv }}"
+    line: "{{ swap_lv }}  swap  swap  defaults  0 0"
 ...

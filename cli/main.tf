@@ -17,12 +17,11 @@ module "db-vsi" {
   PROFILE		= var.DB-PROFILE
   IMAGE			= var.DB-IMAGE
   SSH_KEYS		= var.SSH_KEYS
-  VOLUME_SIZES	= [ "500" , "500" , "500" ]
-  VOL_PROFILE	= "10iops-tier"
 }
 
 module "app-vsi" {
   source		= "./modules/app-vsi"
+  depends_on	= [ module.db-vsi ]
   ZONE			= var.ZONE
   VPC			= var.VPC
   SECURITY_GROUP = var.SECURITY_GROUP
@@ -38,7 +37,7 @@ module "app-vsi" {
 
 module "db-ansible-exec" {
   source		= "./modules/ansible-exec"
-  depends_on	= [ module.db-vsi , local_file.db_ansible_saphana-vars ]
+  depends_on	= [ module.db-vsi , local_file.db_ansible_saphana-vars, local_file.tf_ansible_hana_storage_generated_file ]
   IP			= module.db-vsi.PRIVATE-IP
   PLAYBOOK_PATH = "ansible/saphana.yml"
 }

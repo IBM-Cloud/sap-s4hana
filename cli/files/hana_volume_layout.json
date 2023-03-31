@@ -1,0 +1,1477 @@
+{
+    "profiles": {
+      "mx2-16x128": {
+        "storage": {
+          "hana_vg": {
+            "disk_size": "500",
+            "disk_count": "3",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "hana_data_lv",
+                  "lv_size": "988",
+                  "lv_stripes": "3",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/data"
+                },
+                {
+                  "lv_name": "hana_log_lv",
+                  "lv_size": "256",
+                  "lv_stripes": "3",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/log"
+                },
+                {
+                  "lv_name": "hana_shared_lv",
+                  "lv_size": "256",
+                  "lv_stripes": "3",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/shared"
+                }
+              ]
+            }
+          },
+          "usr_sap": {
+            "disk_size": "50",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "usr_sap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "usr_sap_lv",
+                  "lv_size": "50",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/usr/sap"
+                }
+              ]
+            }
+          },
+          "swap": {
+            "disk_size": "10",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "swap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "swap_lv",
+                  "lv_size": "2",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "swap"
+                }
+              ]
+            }
+          }
+        },
+        "processing_type": {
+          "oltp": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"],
+          "sap_business_one": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4"]
+        }
+      },
+      "mx2-32x256": {
+        "storage": {
+          "hana_vg": {
+            "disk_size": "500",
+            "disk_count": "3",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "hana_data_lv",
+                  "lv_size": "988",
+                  "lv_stripes": "3",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/data"
+                },
+                {
+                  "lv_name": "hana_log_lv",
+                  "lv_size": "256",
+                  "lv_stripes": "3",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/log"
+                },
+                {
+                  "lv_name": "hana_shared_lv",
+                  "lv_size": "256",
+                  "lv_stripes": "3",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/shared"
+                }
+              ]
+            }
+          },
+          "usr_sap": {
+            "disk_size": "50",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "usr_sap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "usr_sap_lv",
+                  "lv_size": "50",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/usr/sap"
+                }
+              ]
+            }
+          },
+          "swap": {
+            "disk_size": "10",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "swap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "swap_lv",
+                  "lv_size": "2",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "swap"
+                }
+              ]
+            }
+          }
+        },
+        "processing_type": {
+          "oltp": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"],
+          "sap_business_one": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4"]
+        }
+      },
+      "mx2-48x384": {
+        "storage": {
+          "hana_vg": {
+            "disk_size": "500",
+            "disk_count": "3",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "hana_data_lv",
+                  "lv_size": "616",
+                  "lv_stripes": "3",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/data"
+                },
+                {
+                  "lv_name": "hana_shared_lv",
+                  "lv_size": "384",
+                  "lv_stripes": "3",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/shared"
+                }
+              ]
+            }
+          },
+          "log": {
+            "disk_size": "100",
+            "disk_count": "4",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_log_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "hana_log_lv",
+                  "lv_size": "400",
+                  "lv_stripes": "4",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/log"
+                }
+              ]
+            }
+          },
+          "usr_sap": {
+            "disk_size": "50",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "usr_sap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "usr_sap_lv",
+                  "lv_size": "50",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/usr/sap"
+                }
+              ]
+            }
+          },
+          "swap": {
+            "disk_size": "10",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "swap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "swap_lv",
+                  "lv_size": "2",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "swap"
+                }
+              ]
+            }
+          }
+        },
+        "processing_type": {
+          "oltp": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"],
+          "sap_business_one": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4"]
+        }
+      },
+      "vx2d-16x224": {
+        "storage": {
+          "hana_vg": {
+            "disk_size": "1120",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "hana_data_lv",
+                  "lv_size": "672",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/data"
+                },
+                {
+                  "lv_name": "hana_log_lv",
+                  "lv_size": "224",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/log"
+                },
+                {
+                  "lv_name": "hana_shared_lv",
+                  "lv_size": "224",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/shared"
+                }
+              ]
+            }
+          },
+          "usr_sap": {
+            "disk_size": "50",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "usr_sap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "usr_sap_lv",
+                  "lv_size": "50",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/usr/sap"
+                }
+              ]
+            }
+          },
+          "swap": {
+            "disk_size": "10",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "swap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "swap_lv",
+                  "lv_size": "2",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "swap"
+                }
+              ]
+            }
+          }
+        },
+        "processing_type": {
+          "oltp": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"]
+        }
+      },
+      "vx2d-44x616": {
+        "storage": {
+          "data": {
+            "disk_size": "1848",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "fs_type": "xfs",
+            "mount_point": "/hana/data"
+          },
+          "shared": {
+            "disk_size": "616",
+            "disk_count": "1",
+            "iops": "5iops-tier",
+            "fs_type": "xfs",
+            "mount_point": "/hana/shared"
+          },
+          "log": {
+            "disk_size": "192",
+            "disk_count": "3",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_log_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                "lv_name": "hana_log_lv",
+                "lv_size": "576",
+                "lv_stripes": "3",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "mount_point": "/hana/log"
+                }
+              ]
+            }
+          },
+          "usr_sap": {
+            "disk_size": "50",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "usr_sap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "usr_sap_lv",
+                  "lv_size": "50",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/usr/sap"
+                }
+              ]
+            }
+          },
+          "swap": {
+            "disk_size": "10",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "swap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "swap_lv",
+                  "lv_size": "2",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "swap"
+                }
+              ]
+            }
+          }
+        },
+        "processing_type": {
+          "oltp": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"],
+          "olap": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"]
+        }
+      },
+      "vx2d-88x1232": {
+        "storage": {
+          "data": {
+            "disk_size": "3696",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "fs_type": "xfs",
+            "mount_point": "/hana/data"
+          },
+          "shared": {
+            "disk_size": "1232",
+            "disk_count": "1",
+            "iops": "5iops-tier",
+            "fs_type": "xfs",
+            "mount_point": "/hana/shared"
+          },
+          "log": {
+            "disk_size": "192",
+            "disk_count": "3",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_log_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                "lv_name": "hana_log_lv",
+                "lv_size": "576",
+                "lv_stripes": "3",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "mount_point": "/hana/log"
+                }
+              ]
+            }
+          },
+          "usr_sap": {
+            "disk_size": "50",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "usr_sap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "usr_sap_lv",
+                  "lv_size": "50",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/usr/sap"
+                }
+              ]
+            }
+          },
+          "swap": {
+            "disk_size": "10",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "swap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "swap_lv",
+                  "lv_size": "2",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "swap"
+                }
+              ]
+            }
+          }
+        },
+        "processing_type": {
+          "oltp": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"],
+          "olap": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"]
+        }
+      },
+      "vx2d-144x2016": {
+        "storage": {
+          "data": {
+            "disk_size": "1024",
+            "disk_count": "4",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_data_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                "lv_name": "hana_data_lv",
+                "lv_size": "4096",
+                "lv_stripes": "4",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "mount_point": "/hana/data"
+                }
+              ]
+            }
+          },
+          "log": {
+            "disk_size": "192",
+            "disk_count": "3",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_log_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                "lv_name": "hana_log_lv",
+                "lv_size": "576",
+                "lv_stripes": "3",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "mount_point": "/hana/log"
+                }
+              ]
+            }
+          },
+          "shared": {
+            "disk_size": "2016",
+            "disk_count": "1",
+            "iops": "5iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_shared_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "hana_shared_lv",
+                  "lv_size": "2016",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/shared"
+                }
+              ]
+            }
+          },
+          "usr_sap": {
+            "disk_size": "50",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "usr_sap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "usr_sap_lv",
+                  "lv_size": "50",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/usr/sap"
+                }
+              ]
+            }
+          },
+          "swap": {
+            "disk_size": "10",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "swap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "swap_lv",
+                  "lv_size": "2",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "swap"
+                }
+              ]
+            }
+          }
+        },
+        "processing_type": {
+          "oltp": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"],
+          "olap": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"]
+        }
+      },
+      "vx2d-176x2464": {
+        "storage": {
+          "data": {
+            "disk_size": "1280",
+            "disk_count": "4",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_data_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                "lv_name": "hana_data_lv",
+                "lv_size": "5120",
+                "lv_stripes": "4",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "mount_point": "/hana/data"
+                }
+              ]
+            }
+          },
+          "log": {
+            "disk_size": "192",
+            "disk_count": "3",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_log_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                "lv_name": "hana_log_lv",
+                "lv_size": "576",
+                "lv_stripes": "3",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "mount_point": "/hana/log"
+                }
+              ]
+            }
+          },
+          "shared": {
+            "disk_size": "2464",
+            "disk_count": "1",
+            "iops": "5iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_shared_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "hana_shared_lv",
+                  "lv_size": "2464",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/shared"
+                }
+              ]
+            }
+          },
+          "usr_sap": {
+            "disk_size": "50",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "usr_sap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "usr_sap_lv",
+                  "lv_size": "50",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/usr/sap"
+                }
+              ]
+            }
+          },
+          "swap": {
+            "disk_size": "10",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "swap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "swap_lv",
+                  "lv_size": "2",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "swap"
+                }
+              ]
+            }
+          }
+        },
+        "processing_type": {
+          "oltp": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"],
+          "olap": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"]
+        }
+      },
+      "ux2d-8x224": {
+        "storage": {
+          "hana_vg": {
+            "disk_size": "1120",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "hana_data_lv",
+                  "lv_size": "672",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/data"
+                },
+                {
+                  "lv_name": "hana_log_lv",
+                  "lv_size": "224",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/log"
+                },
+                {
+                  "lv_name": "hana_shared_lv",
+                  "lv_size": "224",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/shared"
+                }
+              ]
+            }
+          },
+          "usr_sap": {
+            "disk_size": "50",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "usr_sap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "usr_sap_lv",
+                  "lv_size": "50",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/usr/sap"
+                }
+              ]
+            }
+          },
+          "swap": {
+            "disk_size": "10",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "swap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "swap_lv",
+                  "lv_size": "2",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "swap"
+                }
+              ]
+            }
+          }
+        },
+        "processing_type": {
+          "oltp": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"]
+        }
+      },
+      "ux2d-16x448": {
+        "storage": {
+          "hana_vg": {
+            "disk_size": "2240",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "hana_data_lv",
+                  "lv_size": "1344",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/data"
+                },
+                {
+                  "lv_name": "hana_log_lv",
+                  "lv_size": "448",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/log"
+                },
+                {
+                  "lv_name": "hana_shared_lv",
+                  "lv_size": "448",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/shared"
+                }
+              ]
+            }
+          },
+          "usr_sap": {
+            "disk_size": "50",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "usr_sap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "usr_sap_lv",
+                  "lv_size": "50",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/usr/sap"
+                }
+              ]
+            }
+          },
+          "swap": {
+            "disk_size": "10",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "swap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "swap_lv",
+                  "lv_size": "2",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "swap"
+                }
+              ]
+            }
+          }
+        },
+        "processing_type": {
+          "oltp": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"]
+        }
+      },
+      "ux2d-36x1008": {
+        "storage": {
+          "data": {
+            "disk_size": "1008",
+            "disk_count": "2",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_data_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                "lv_name": "hana_data_lv",
+                "lv_size": "2016",
+                "lv_stripes": "2",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "mount_point": "/hana/data"
+                }
+              ]
+            }
+          },
+          "log": {
+            "disk_size": "192",
+            "disk_count": "3",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_log_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                "lv_name": "hana_log_lv",
+                "lv_size": "576",
+                "lv_stripes": "3",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "mount_point": "/hana/log"
+                }
+              ]
+            }
+          },
+          "shared": {
+            "disk_size": "1008",
+            "disk_count": "1",
+            "iops": "5iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_shared_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "hana_shared_lv",
+                  "lv_size": "1008",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/shared"
+                }
+              ]
+            }
+          },
+          "usr_sap": {
+            "disk_size": "50",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "usr_sap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "usr_sap_lv",
+                  "lv_size": "50",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/usr/sap"
+                }
+              ]
+            }
+          },
+          "swap": {
+            "disk_size": "10",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "swap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "swap_lv",
+                  "lv_size": "2",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "swap"
+                }
+              ]
+            }
+          }
+        },
+        "processing_type": {
+          "oltp": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"]
+        }
+      },
+      "ux2d-48x1344": {
+        "storage": {
+          "data": {
+            "disk_size": "1350",
+            "disk_count": "2",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_data_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                "lv_name": "hana_data_lv",
+                "lv_size": "2700",
+                "lv_stripes": "2",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "mount_point": "/hana/data"
+                }
+              ]
+            }
+          },
+          "log": {
+            "disk_size": "192",
+            "disk_count": "3",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_log_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                "lv_name": "hana_log_lv",
+                "lv_size": "576",
+                "lv_stripes": "3",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "mount_point": "/hana/log"
+                }
+              ]
+            }
+          },
+          "shared": {
+            "disk_size": "1344",
+            "disk_count": "1",
+            "iops": "5iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_shared_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "hana_shared_lv",
+                  "lv_size": "1344",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/shared"
+                }
+              ]
+            }
+          },
+          "usr_sap": {
+            "disk_size": "50",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "usr_sap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "usr_sap_lv",
+                  "lv_size": "50",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/usr/sap"
+                }
+              ]
+            }
+          },
+          "swap": {
+            "disk_size": "10",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "swap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "swap_lv",
+                  "lv_size": "2",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "swap"
+                }
+              ]
+            }
+          }
+        },
+        "processing_type": {
+          "oltp": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"]
+        }
+      },
+      "ux2d-72x2016": {
+        "storage": {
+          "data": {
+            "disk_size": "1024",
+            "disk_count": "4",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_data_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                "lv_name": "hana_data_lv",
+                "lv_size": "4096",
+                "lv_stripes": "4",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "mount_point": "/hana/data"
+                }
+              ]
+            }
+          },
+          "log": {
+            "disk_size": "192",
+            "disk_count": "3",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_log_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                "lv_name": "hana_log_lv",
+                "lv_size": "576",
+                "lv_stripes": "3",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "mount_point": "/hana/log"
+                }
+              ]
+            }
+          },
+          "shared": {
+            "disk_size": "2016",
+            "disk_count": "1",
+            "iops": "5iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_shared_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "hana_shared_lv",
+                  "lv_size": "2016",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/shared"
+                }
+              ]
+            }
+          },
+          "usr_sap": {
+            "disk_size": "50",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "usr_sap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "usr_sap_lv",
+                  "lv_size": "50",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/usr/sap"
+                }
+              ]
+            }
+          },
+          "swap": {
+            "disk_size": "10",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "swap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "swap_lv",
+                  "lv_size": "2",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "swap"
+                }
+              ]
+            }
+          }
+        },
+        "processing_type": {
+          "oltp": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"]
+        }
+      },
+      "ux2d-100x2800": {
+        "storage": {
+          "data": {
+            "disk_size": "2100",
+            "disk_count": "4",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_data_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                "lv_name": "hana_data_lv",
+                "lv_size": "8400",
+                "lv_stripes": "4",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "mount_point": "/hana/data"
+                }
+              ]
+            }
+          },
+          "log": {
+            "disk_size": "192",
+            "disk_count": "3",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_log_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                "lv_name": "hana_log_lv",
+                "lv_size": "576",
+                "lv_stripes": "3",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "mount_point": "/hana/log"
+                }
+              ]
+            }
+          },
+          "shared": {
+            "disk_size": "2800",
+            "disk_count": "1",
+            "iops": "5iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_shared_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "hana_shared_lv",
+                  "lv_size": "2800",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/shared"
+                }
+              ]
+            }
+          },
+          "usr_sap": {
+            "disk_size": "50",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "usr_sap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "usr_sap_lv",
+                  "lv_size": "50",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/usr/sap"
+                }
+              ]
+            }
+          },
+          "swap": {
+            "disk_size": "10",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "swap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "swap_lv",
+                  "lv_size": "2",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "swap"
+                }
+              ]
+            }
+          }
+        },
+        "processing_type": {
+          "oltp": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"]
+        }
+      },
+      "ux2d-200x5600": {
+        "storage": {
+          "data": {
+            "disk_size": "4200",
+            "disk_count": "4",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_data_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                "lv_name": "hana_data_lv",
+                "lv_size": "16800",
+                "lv_stripes": "4",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "mount_point": "/hana/data"
+                }
+              ]
+            }
+          },
+          "log": {
+            "disk_size": "192",
+            "disk_count": "3",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_log_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                "lv_name": "hana_log_lv",
+                "lv_size": "576",
+                "lv_stripes": "3",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "mount_point": "/hana/log"
+                }
+              ]
+            }
+          },
+          "shared": {
+            "disk_size": "5600",
+            "disk_count": "1",
+            "iops": "5iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "hana_shared_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "hana_shared_lv",
+                  "lv_size": "5600",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/hana/shared"
+                }
+              ]
+            }
+          },
+          "usr_sap": {
+            "disk_size": "50",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "usr_sap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "usr_sap_lv",
+                  "lv_size": "50",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "xfs",
+                  "mount_point": "/usr/sap"
+                }
+              ]
+            }
+          },
+          "swap": {
+            "disk_size": "10",
+            "disk_count": "1",
+            "iops": "10iops-tier",
+            "lvm": {
+              "vg": {
+                "vg_name": "swap_vg",
+                "pe_size_MB": "32"
+              },
+              "lv": [
+                {
+                  "lv_name": "swap_lv",
+                  "lv_size": "2",
+                  "lv_stripes": "1",
+                  "lv_stripe_size": "64",
+                  "fs_type": "swap"
+                }
+              ]
+            }
+          }
+        },
+        "processing_type": {
+          "oltp": ["sles-12-4", "sles-12-5", "sles-15-1", "sles-15-2", "sles-15-3", "sles-15-4", "redhat-7-6", "redhat-7-9", "redhat-8-1", "redhat-8-2", "redhat-8-4", "redhat-8-6"]
+        }
+      }
+    }
+  }

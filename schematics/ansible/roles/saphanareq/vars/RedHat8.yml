@@ -44,6 +44,7 @@ saphana_required_configurations:
   - "kernel_RedHat8"
   - "reboot"
   - "filesystems"
+  - "tmpfs"
   - "tuned"
   - "SELinux"
   - "firewalld"

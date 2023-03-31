@@ -1,0 +1,49 @@
+---
+# TMPFS sizing
+# SAP Notes:
+# - 2772999 - Red Hat Enterprise Linux 8.x: Installation and Configuration (v22)
+# - 941735 - SAP memory management system for 64-bit Linux systems (v11)
+
+- name: Get the RAM size
+  set_fact:
+    hana_ram_g: "{{ hana_profile.split('-')[1].split('x')[1] }}"
+
+- name: Set swap logical volume size for RAM higher than 8192
+  set_fact:
+    swap_lv_size_g: "2"
+
+- name: Get the current tmpfs mount data
+  shell: set -o pipefail && df -h |grep tmpfs|grep shm| awk '{print $2}'
+  args:
+    executable: /bin/bash
+  register: tmpfs_crt_data
+  changed_when: false
+  when: swap_lv_size_g is defined
+
+- name: Compute tmpfs size
+  set_fact:
+    tmpfs_size_g: "{{ ((hana_ram_g | float + swap_lv_size_g | float) * 0.75) | round | int }}"
+
+- name: Current tmpfs size
+  set_fact:
+    crt_tmpfs_size_g: "{{ tmpfs_crt_data.stdout | regex_search('^[0-9]+') | float | round | int }}"
+
+- name: Difference between current size and expected one
+  set_fact:
+    difference_size: "{{ (crt_tmpfs_size_g | float - tmpfs_size_g | float) | abs }}"
+
+- name: Remount tmpfs
+  mount:
+    path: /dev/shm
+    src: tmpfs
+    fstype: tmpfs
+    opts: "size={{ tmpfs_size_g }}G,rw,nosuid,nodev 0 0"
+    state: remounted
+  when: difference_size | int > 1
+
+- name: Add tmpfs device to /etc/fstab
+  lineinfile:
+    path: /etc/fstab
+    regexp: "^/dev/shm (.*)$"
+    line: "tmpfs /dev/shm tmpfs size={{ tmpfs_size_g }}G,rw,nosuid,nodev 0 0"
+...

@@ -69,14 +69,22 @@ variable "DB-HOSTNAME" {
 
 variable "DB-PROFILE" {
 	type		= string
-	description = "DB VSI Profile"
+	description = "DB VSI Profile. The certified profiles for SAP HANA in IBM VPC: https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-intel-vs-vpc"
 	default		= "mx2-16x128"
+	validation {
+		condition     = contains(keys(jsondecode(file("files/hana_volume_layout.json")).profiles), "${var.DB-PROFILE}")
+		error_message = "The chosen storage PROFILE for HANA VSI \"${var.DB-PROFILE}\" is not a certified storage profile. Please, chose the appropriate certified storage PROFILE for the HANA VSI from  https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-intel-vs-vpc . Make sure the selected PROFILE is certified for the selected OS type and for the proceesing type (SAP Business One, OLTP, OLAP)"
+	}
 }
 
 variable "DB-IMAGE" {
 	type		= string
 	description = "DB VSI OS Image"
-	default		= "ibm-redhat-7-6-amd64-sap-hana-1"
+	default		= "ibm-redhat-8-4-amd64-sap-hana-2"
+	validation {
+		condition     = length(regexall("^(ibm-redhat-7-6-amd64-sap-hana|ibm-redhat-8-4-amd64-sap-hana|ibm-sles-15-3-amd64-sap-hana)-[0-9][0-9]*", var.DB-IMAGE)) > 0
+		error_message = "The OS SAP DB-IMAGE must be one of  \"ibm-sles-15-3-amd64-sap-hana-x\", \"ibm-redhat-8-4-amd64-sap-hana-x\" or \"ibm-redhat-7-6-amd64-sap-hana-x\"."
+ 	}
 }
 
 variable "APP-HOSTNAME" {
@@ -153,7 +161,7 @@ variable "hana_components" {
 variable "kit_saphana_file" {
 	type		= string
 	description = "kit_saphana_file"
-	default		= "51054623.ZIP"
+	default		= "51055299.ZIP"
 }
 
 variable "sap_sid" {
