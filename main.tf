@@ -42,7 +42,8 @@ module "vpc-subnet" {
 
 module "db-vsi" {
   source		= "./modules/db-vsi"
-  depends_on	= [ module.precheck-ssh-exec ]
+  # depends_on	= [ module.precheck-ssh-exec ]
+  depends_on	= [ module.vpc-subnet ]
   ZONE			= var.ZONE
   VPC			= var.VPC
   SECURITY_GROUP = var.SECURITY_GROUP

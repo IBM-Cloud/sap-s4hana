@@ -19,6 +19,7 @@ data "ibm_resource_group" "group" {
 }
 
 resource "ibm_is_instance" "vsi" {
+  tags = [ "wes-sap-automation" ]
   vpc		= data.ibm_is_vpc.vpc.id
   zone		= var.ZONE
   resource_group = data.ibm_resource_group.group.id
