@@ -1,5 +1,5 @@
 ---
-- name: Set recommended kernel parameters for SAP NW on RedHat 8
+- name: Set recommended kernel parameters for SAP AP on RedHat 8
   sysctl:
     sysctl_file: /etc/sysctl.d/sap.conf
     name: "{{ kernel_param.name }}"
@@ -11,6 +11,9 @@
     - { name: vm.max_map_count, value: 2147483647 }
     - { name: kernel.pid_max, value: 4194304 }
     - { name: kernel.sem, value: "32000 1024000000 500 32000" }
+    - { name: net.ipv4.tcp_keepalive_time, value: 300 }
+    - { name: net.ipv4.tcp_keepalive_intvl, value: 75 }
+    - { name: net.ipv4.tcp_keepalive_probes, value: 9 }
   loop_control:
     loop_var: kernel_param
 ...

@@ -1,0 +1,27 @@
+---
+sapbase_required_packages:
+  - uuidd
+  - libnsl
+  - tcsh
+  - psmisc
+  - nfs-utils
+  - bind-utils
+  - chrony
+  - lvm2
+  - unzip
+
+sapbase_required_configurations:
+  - "repository_RHEL"
+  - "update_RedHat8"
+  - "reqpkg"
+  - "hostname_fix_RedHat"
+  - "hostname"
+  - "umask_RHEL"
+  - "SELinux"
+  - "firewalld"
+  - "uuidd"
+  - "abrtd"
+  - "kdump"
+  - "tmpfiles"
+  - "reboot"
+... 

@@ -5,17 +5,12 @@ saphana_required_packages:
   - iptraf-ng
   - lm_sensors
   - net-tools
-  - uuidd
-  - libnsl
-  - tcsh
-  - psmisc
-  - nfs-utils
-  - bind-utils
   - expect
   - gtk2
   - krb5-workstation
   - krb5-libs
   - libaio
+  - libatomic
   - libcanberra-gtk2
   - libibverbs
   - libicu
@@ -29,29 +24,15 @@ saphana_required_packages:
   - xfsprogs
   - xorg-x11-xauth
   - compat-sap-c++-9
-  - libatomic
-  - chrony
-  - lvm2
-  - unzip
+  - compat-sap-c++-10
+  - compat-sap-c++-11
 
 saphana_required_configurations:
-  - "repository_RedHat"
-  - "update_RedHat8"
   - "reqpkg"
-  - "hostname_fix_RedHat"
-  - "hostname"
-  - "umask_RHEL"
   - "kernel_RedHat8"
-  - "reboot"
   - "filesystems"
   - "tmpfs"
   - "tuned"
-  - "SELinux"
-  - "firewalld"
-  - "uuidd"
-  - "abrtd"
-  - "kdump"
   - "limits"
-  - "tmpfiles"
   - "reboot"
 ... 

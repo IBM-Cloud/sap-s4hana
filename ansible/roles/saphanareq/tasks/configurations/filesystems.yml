@@ -1,8 +1,8 @@
 ---
 # Storage sizing
-# https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-intel-vs-vpc (Last updated 2022-01-28)
-# https://cloud.ibm.com/docs/sap?topic=sap-storage-design-considerations#hana-iaas-mx2-16x128-32x256-configure (Last updated 2022-05-19)
-# https://cloud.ibm.com/docs/sap?topic=sap-storage-design-considerations#hana-iaas-mx2-48x384-configure (Last updated 2022-05-19)
+# https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-intel-vs-vpc (Updated on 2023-03-08)
+# https://cloud.ibm.com/docs/sap?topic=sap-storage-design-considerations#hana-iaas-mx2-16x128-32x256-configure (Updated on 2022-05-19)
+# https://cloud.ibm.com/docs/sap?topic=sap-storage-design-considerations#hana-iaas-mx2-48x384-configure (Updated on 2022-05-19)
 # SAP Notes:
 # - 2779331 - HANA services use large SWAP memory (v5)
 

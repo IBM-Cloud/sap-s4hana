@@ -5,6 +5,7 @@
     - name: Import playbook variables
       include_vars: "saphana-vars.yml"
   roles:
+    - sapbasereq
     - saphanareq
     - saphanainst
 ...

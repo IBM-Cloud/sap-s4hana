@@ -110,7 +110,7 @@ variable "DB_PROFILE" {
 variable "DB_IMAGE" {
 	type		= string
 	description = "The OS image used for HANA VSI. A list of images is available here: https://cloud.ibm.com/docs/vpc?topic=vpc-about-images."
-	default		= "ibm-redhat-8-6-amd64-sap-hana-4"
+	default		= "ibm-redhat-8-6-amd64-sap-hana-5"
 	validation {
 		condition     = length(regexall("^(ibm-redhat-8-(4|6)-amd64-sap-hana|ibm-sles-15-(3|4)-amd64-sap-hana)-[0-9][0-9]*", var.DB_IMAGE)) > 0
              error_message = "The OS SAP DB_IMAGE must be one of  \"ibm-sles-15-3-amd64-sap-hana-x\", \"ibm-sles-15-4-amd64-sap-hana-x\", \"ibm-redhat-8-4-amd64-sap-hana-x\" or \"ibm-redhat-8-6-amd64-sap-hana-x\"."
@@ -135,7 +135,7 @@ variable "APP_PROFILE" {
 variable "APP_IMAGE" {
 	type		= string
 	description = "The OS image used for SAP Application VSI. A list of images is available here: https://cloud.ibm.com/docs/vpc?topic=vpc-about-images."
-	default		= "ibm-redhat-8-6-amd64-sap-applications-4"
+	default		= "ibm-redhat-8-6-amd64-sap-applications-5"
 	validation {
 			condition     = length(regexall("^(ibm-redhat-8-(4|6)-amd64-sap-applications|ibm-sles-15-(3|4)-amd64-sap-applications)-[0-9][0-9]*", var.APP_IMAGE)) > 0
              error_message = "The OS SAP APP_IMAGE must be one of  \"ibm-sles-15-3-amd64-sap-applications-x\", \"ibm-sles-15-4-amd64-sap-applications-x\", \"ibm-redhat-8-4-amd64-sap-applications-x\" or \"ibm-redhat-8-6-amd64-sap-applications-x\"."
@@ -165,6 +165,16 @@ variable "ATR_NAME" {
 ##############################################################
 # The variables and data sources used in SAP Ansible Modules.
 ##############################################################
+
+variable "S4HANA_VERSION" {
+	type		= string
+	description = "The version of S/4HANA. The version can take one of the following values: 2023, 2022, 2021, 2020."
+	default     = "2023"
+	validation {
+		condition = contains(["2023", "2022", "2021", "2020"], var.S4HANA_VERSION)
+		error_message = "The version of S/4HANA is not valid. The allowed values should be one of the following: 2023, 2022, 2021, 2020"
+	}
+}
 
 variable "HANA_SID" {
 	type		= string
@@ -219,7 +229,7 @@ variable "HANA_COMPONENTS" {
 variable "KIT_SAPHANA_FILE" {
 	type		= string
 	description = "Path to SAP HANA ZIP file. As downloaded from SAP Support Portal."
-	default		= "/storage/HANADB/51055299.ZIP"
+	default		= "/storage/HANADB/51057281_SPS07_rev73.ZIP"
 }
 
 variable "SAP_SID" {
@@ -281,25 +291,25 @@ variable "KIT_SAPCAR_FILE" {
 variable "KIT_SWPM_FILE" {
 	type		= string
 	description = "Path to SWPM archive (SAR). As downloaded from SAP Support Portal."
-	default		= "/storage/S4HANA/SWPM20SP09_4-80003424.SAR"
+	default		= "/storage/S4HANA/SWPM20SP17_0-80003424.SAR"
 }
 
 variable "KIT_SAPEXE_FILE" {
 	type		= string
 	description = "Path to SAP Kernel OS archive (SAR). As downloaded from SAP Support Portal."
-	default		= "/storage/S4HANA/SAPEXE_100-70005283.SAR"
+	default		= "/storage/S4HANA/KERNEL/793/SAPEXE_60-70007807.SAR"
 }
 
 variable "KIT_SAPEXEDB_FILE" {
 	type		= string
 	description = "Path to SAP Kernel DB archive (SAR). As downloaded from SAP Support Portal."
-	default		= "/storage/S4HANA/SAPEXEDB_100-70005282.SAR"
+	default		= "/storage/S4HANA/KERNEL/793/SAPEXEDB_60-70007806.SAR"
 }
 
 variable "KIT_IGSEXE_FILE" {
 	type		= string
 	description = "Path to IGS archive (SAR). As downloaded from SAP Support Portal."
-	default		= "/storage/S4HANA/igsexe_1-70005417.sar"
+	default		= "/storage/S4HANA/KERNEL/793/igsexe_4-70005417.sarr"
 }
 
 variable "KIT_IGSHELPER_FILE" {
@@ -311,19 +321,19 @@ variable "KIT_IGSHELPER_FILE" {
 variable "KIT_SAPHOSTAGENT_FILE" {
 	type		= string
 	description = "Path to SAP Host Agent archive (SAR). As downloaded from SAP Support Portal."
-	default		= "/storage/S4HANA/SAPHOSTAGENT51_51-20009394.SAR"
+	default		= "/storage/S4HANA/SAPHOSTAGENT61_61-80004822.SAR"
 }
 
 variable "KIT_HDBCLIENT_FILE" {
 	type		= string
 	description = "Path to HANA DB client archive (SAR). As downloaded from SAP Support Portal."
-	default		= "/storage/S4HANA/IMDB_CLIENT20_009_28-80002082.SAR"
+	default		= "/storage/S4HANA/IMDB_CLIENT20_018_27-80002082.SAR"
 }
 
 variable "KIT_S4HANA_EXPORT" {
 	type		= string
 	description = "Path to S/4HANA Installation Export dir. The archives downloaded from SAP Support Portal should be present in this path."
-	default		= "/storage/S4HANA/export"
+	default		= "/storage/S4HANA/2023"
 }
 
 # ATR variables and conditions
@@ -347,4 +357,3 @@ data "ibm_resource_instance" "activity_tracker" {
   location          = var.REGION
   service           = "logdnaat"
 }
-

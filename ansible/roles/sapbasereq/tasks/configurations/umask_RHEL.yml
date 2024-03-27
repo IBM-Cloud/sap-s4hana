@@ -6,7 +6,7 @@
     replace: 'umask 022'
   loop:
     - /etc/profile
-    - /etc/bashrc
+    - /etc/bashrc 
   loop_control:
     loop_var: file
 ...

@@ -1,20 +1,14 @@
 ---
 saphana_required_packages:
-  - lvm2
-  - uuidd
-
+  - libgcc_s1
+  - libstdc++6
+  - libatomic1
 saphana_required_configurations:
-  - "repository_SLES"
-  - "update_SLES_SAP"
   - "reqpkg"
-  - "umask_SLES"
-  - "hostname"
   - "kernel_SLES_SAP15"
-  - "reboot"
   - "filesystems"
-  - "limits"
-  - "tmpfiles"
-  - "uuidd"
+  - "tmpfs"
   - "saptune"
+  - "limits"
   - "reboot"
 ... 

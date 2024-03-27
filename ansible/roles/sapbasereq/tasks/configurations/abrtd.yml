@@ -7,5 +7,5 @@
     name: abrtd
     state: stopped
     enabled: no
-  when: "'abrtd.service' in services"
+  when: "'abrtd.service' in services"  
 ...

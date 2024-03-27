@@ -1,6 +1,6 @@
 ---
 #Sapinst product-id
-sap_product_id: "NW_ABAP_OneHost:S4HANA2020.CORE.HDB.ABAP"
+sap_product_id: "NW_ABAP_OneHost:S4HANA{{ s4hana_version }}.CORE.HDB.ABAP"
 
 #Target files location
 s4app_kit: "/usr/sap/trans/kit"

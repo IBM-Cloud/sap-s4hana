@@ -4,7 +4,7 @@
 
 - name: Generate parameter file for sapinst
   template:
-      src: sapinst.cfg
+      src: sapinst_{{ s4hana_version }}.cfg
       dest: "{{ s4app_kit }}/inifile.params"
 
 - name: Check if S/4HANA Application Server was already installed

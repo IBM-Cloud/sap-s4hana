@@ -76,7 +76,7 @@ module "app-ansible-exec-schematics" {
   depends_on = [ module.app-vsi, local_file.ansible_inventory, local_file.db_ansible_saphana-vars, local_file.app_ansible_saps4app-vars, local_file.tf_ansible_hana_storage_generated_file ]
   count = (var.PRIVATE_SSH_KEY == "n.a" && var.BASTION_FLOATING_IP == "localhost" ? 0 : 1)
   IP = data.ibm_is_instance.db-vsi.primary_network_interface[0].primary_ip[0].address
-  PLAYBOOK = "sap-s-hana.yml"
+  PLAYBOOK = "sap-s4hana.yml"
   BASTION_FLOATING_IP = var.BASTION_FLOATING_IP
   ID_RSA_FILE_PATH = var.ID_RSA_FILE_PATH
   PRIVATE_SSH_KEY = var.PRIVATE_SSH_KEY
@@ -90,6 +90,6 @@ module "ansible-exec-cli" {
   IP = data.ibm_is_instance.db-vsi.primary_network_interface[0].primary_ip[0].address
   ID_RSA_FILE_PATH = var.ID_RSA_FILE_PATH
   SAP_MAIN_PASSWORD = var.SAP_MAIN_PASSWORD
-  PLAYBOOK = "sap-s-hana.yml"
+  PLAYBOOK = "sap-s4hana.yml"
 }
 

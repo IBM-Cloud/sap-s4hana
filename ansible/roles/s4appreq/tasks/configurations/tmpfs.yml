@@ -1,0 +1,26 @@
+---
+# TMPFS sizing
+# SAP Notes:
+# - 2772999 - Red Hat Enterprise Linux 8.x: Installation and Configuration (v22)
+# - 941735 - SAP memory management system for 64-bit Linux systems (v11)
+
+- name: Update target hosts variables
+  gather_facts:
+
+- name: Compute new tmpfs size
+  set_fact:
+    tmpfs_size_g: "{{ ((( ansible_memory_mb.real.total | int + ansible_memory_mb.swap.total | int) * 0.75) / 1024) | round | int }}"
+
+- name: Add tmpfs device to /etc/fstab
+  lineinfile:
+    path: /etc/fstab
+    regexp: "^/dev/shm (.*)$"
+    line: "tmpfs /dev/shm tmpfs size={{ tmpfs_size_g }}G,rw,nosuid,nodev 0 0"
+
+- name: Remount tmpfs
+  mount:
+    path: /dev/shm
+    src: tmpfs
+    fstype: tmpfs
+    state: remounted
+...

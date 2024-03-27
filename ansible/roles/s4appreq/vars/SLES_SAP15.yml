@@ -1,19 +1,13 @@
 ---
-s4app_required_packages:
-  - lvm2
-  - uuidd
+ap_required_packages:
+  - libgcc_s1
+  - libstdc++6
+  - libatomic1
 
-s4app_required_configurations:
-  - "repository_SLES"
-  - "update_SLES_SAP"
+ap_required_configurations:
   - "reqpkg"
-  - "umask_SLES"
-  - "hostname"
-  - "reboot"
-  - "filesystems"
+  - "tmpfs"
   - "limits"
-  - "tmpfiles"
-  - "uuidd"
   - "saptune"
   - "reboot"
 ...

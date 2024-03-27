@@ -64,7 +64,6 @@
 
 - name: Get the swap logical volume size for RAM higher than 8192
   set_fact:
-    # swap_lv_size: "320g"
     swap_lv_size: "32g"
   when: app_ram | int >= 8192
 

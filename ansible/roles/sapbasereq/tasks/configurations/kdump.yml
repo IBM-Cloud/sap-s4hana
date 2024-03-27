@@ -7,5 +7,5 @@
     name: kdump
     state: stopped
     enabled: no
-  when: "'kdump.service' in services"
+  when: "'kdump.service' in services"  
 ...

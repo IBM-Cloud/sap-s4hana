@@ -1,53 +1,14 @@
 ---
-s4app_required_packages:
-  - cairo
-  - graphviz
-  - iptraf-ng
-  - lm_sensors
-  - net-tools
-  - uuidd
-  - libnsl
-  - tcsh
-  - psmisc
-  - nfs-utils
-  - bind-utils
-  - expect
-  - gtk2
-  - krb5-workstation
-  - krb5-libs
-  - libaio
-  - libcanberra-gtk2
-  - libibverbs
-  - libicu
-  - libtool-ltdl
-  - numactl
-  - openssl
-  - PackageKit-gtk3-module
-  - rsyslog
-  - sudo
-  - xfsprogs
-  - xorg-x11-xauth
-  - libatomic
-  - chrony
-  - lvm2
-  - unzip
+ap_required_packages:
+  - "compat-sap-c++-10"
+  - "compat-sap-c++-11"
+  - "libatomic"
 
-s4app_required_configurations:
-  - "repository_RedHat"
-  - "update_RedHat8"
+ap_required_configurations:
   - "reqpkg"
-  - "hostname_fix_RedHat"
-  - "hostname"
   - "kernel_RedHat8"
-  - "umask_RHEL"
-  - "reboot"
-  - "filesystems"
-  - "SELinux"
-  - "firewalld"
-  - "uuidd"
-  - "abrtd"
-  - "kdump"
+  - "tmpfs"
   - "limits"
-  - "tmpfiles"
+  - "compatlibs"
   - "reboot"
 ... 

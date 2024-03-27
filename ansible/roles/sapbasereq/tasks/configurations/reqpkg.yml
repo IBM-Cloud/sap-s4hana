@@ -2,5 +2,5 @@
 - name: Import required packages
   package:
     state: present
-    name: "{{ ap_required_packages }}"
+    name: "{{ sapbase_required_packages }}"
 ...
