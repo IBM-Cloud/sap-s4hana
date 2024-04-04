@@ -229,7 +229,7 @@ variable "HANA_COMPONENTS" {
 variable "KIT_SAPHANA_FILE" {
 	type		= string
 	description = "Path to SAP HANA ZIP file. As downloaded from SAP Support Portal."
-	default		= "/storage/HANADB/51057281_SPS07_rev73.ZIP"
+	default		= "/storage/HANADB/51057281.ZIP"
 }
 
 variable "SAP_SID" {
@@ -309,7 +309,7 @@ variable "KIT_SAPEXEDB_FILE" {
 variable "KIT_IGSEXE_FILE" {
 	type		= string
 	description = "Path to IGS archive (SAR). As downloaded from SAP Support Portal."
-	default		= "/storage/S4HANA/KERNEL/793/igsexe_4-70005417.sarr"
+	default		= "/storage/S4HANA/KERNEL/793/igsexe_4-70005417.sar"
 }
 
 variable "KIT_IGSHELPER_FILE" {

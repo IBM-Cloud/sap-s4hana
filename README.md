@@ -454,9 +454,9 @@ HANA_COMPONENTS = "server"
 # SAP HANA Components. Default: server. Supported values: all, client, es, ets, lcapps, server, smartda, streaming, rdsync, xs, studio, afl, sca, sop, eml, rme, rtl, trp
 # Example: HANA_COMPONENTS = "server"
 
-KIT_SAPHANA_FILE = "/storage/HANADB/51057281_SPS07_rev73.ZIP"
+KIT_SAPHANA_FILE = "/storage/HANADB/51057281.ZIP"
 # SAP HANA Installation kit path
-# Example for Red Hat 8 or Suse 15: KIT_SAPHANA_FILE = "/storage/HANADB/51057281_SPS07_rev73.ZIP"
+# Example for Red Hat 8 or Suse 15: KIT_SAPHANA_FILE = "/storage/HANADB/51057281.ZIP"
 
 ##########################################################
 # SAP system configuration
