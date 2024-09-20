@@ -7,11 +7,11 @@
 
 - name: Check if HANA profile was already set
   command: "saptune status"
-  register: hana_profile
+  register: hana_saptuneprofile
   changed_when: False
-  failed_when: hana_profile.rc != 0 and hana_profile.rc != 3
+  failed_when: hana_saptuneprofile.rc != 0 and hana_saptuneprofile.rc != 3
 
 - name: Select HANA profile for saptune
   command: /usr/sbin/saptune solution apply HANA
-  when: "'HANA' not in hana_profile.stdout"
+  when: "'HANA' not in hana_saptuneprofile.stdout"
 ...

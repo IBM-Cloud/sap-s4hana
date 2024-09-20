@@ -13,6 +13,11 @@ variable "SAP_MAIN_PASSWORD" {
     description = "SAP_MAIN_PASSWORD"
 }
 
+variable "HANA_MAIN_PASSWORD" {
+    type = string
+    description = "HANA_MAIN_PASSWORD"
+}
+
 variable "ID_RSA_FILE_PATH" {
     nullable = false
     description = "Input your id_rsa private key file path in OpenSSH format."

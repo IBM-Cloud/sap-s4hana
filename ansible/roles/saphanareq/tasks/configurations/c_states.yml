@@ -1,0 +1,40 @@
+---
+# Set processor.max_cstate=1 intel_idle.max_cstate=1 in GRUB_CMDLINE_LINUX
+
+- name: Check if the server is using UEFI or BIOS
+  ansible.builtin.stat:
+    path: /sys/firmware/efi 
+  register: uefi
+
+- name: Set GRUB command for non-UEFI
+  set_fact:
+    grub_cmd: "grub2-mkconfig -o /boot/grub2/grub.cfg"
+  when: not uefi.stat.exists
+
+- name: Set GRUB command for UEFI
+  set_fact:
+    grub_cmd: "grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg"
+  when: uefi.stat.exists and uefi.stat.isdir
+
+- name: Check if C-States parameters are configured in the boot command
+  lineinfile:
+    backup: true
+    path: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX=".*max_cstate'
+    state: absent
+  check_mode: true
+  register: cstate_check
+  changed_when: false
+
+- name: Insert C-States parameters in GRUB_CMDLINE_LINUX if missing
+  lineinfile:
+    backrefs: true
+    path: /etc/default/grub
+    regexp: "^(GRUB_CMDLINE_LINUX=\".*)\"$"
+    line: '\1 processor.max_cstate=1 intel_idle.max_cstate=1"'
+  when: cstate_check.found == 0
+
+- name: Enable grub changes
+  command: "{{ grub_cmd }}"
+  when: cstate_check.found == 0
+...

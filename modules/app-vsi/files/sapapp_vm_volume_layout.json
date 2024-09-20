@@ -1,0 +1,65 @@
+{
+  "profiles": {
+    "default": {
+      "storage": {
+        "app_vg": {
+          "disk_size": "128",
+          "disk_count": "1",
+          "iops": "10iops-tier",
+          "lvm": {
+            "vg": {
+              "vg_name": "<sid>_app_vg"
+            },
+            "lv": [
+              {
+                "lv_name": "<sid>_usrsap_lv",
+                "lv_size": "5",
+                "fs_type": "ext4",
+                "mount_point": "/usr/sap",
+                "mount_options": "defaults"
+              },
+              {
+                "lv_name": "<sid>_sap_lv",
+                "lv_size": "20",
+                "fs_type": "ext4",
+                "mount_point": "/usr/sap/<SID>",
+                "mount_options": "defaults"
+              },
+              {
+                "lv_name": "<sid>_sapmnt_lv",
+                "lv_size": "20",
+                "fs_type": "ext4",
+                "mount_point": "/sapmnt/<SID>",
+                "mount_options": "defaults"
+              },
+              {
+                "lv_name": "<sid>_saptrans_lv",
+                "lv_size": "50",
+                "fs_type": "ext4",
+                "mount_point": "/usr/sap/trans",
+                "mount_options": "defaults"
+              }                
+            ]
+          }
+        },
+        "swap": {
+          "disk_size": "<swap_disk_size>",
+          "disk_count": "1",
+          "iops": "10iops-tier",
+          "lvm": {
+            "vg": {
+              "vg_name": "swap_vg"
+            },
+            "lv": [
+              {
+                "lv_name": "swap_lv",
+                "lv_size": "100%FREE",
+                "fs_type": "swap"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

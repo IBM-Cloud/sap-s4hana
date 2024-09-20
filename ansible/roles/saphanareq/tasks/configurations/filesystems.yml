@@ -1,24 +1,37 @@
 ---
 # Storage sizing
-# https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-intel-vs-vpc (Updated on 2023-03-08)
-# https://cloud.ibm.com/docs/sap?topic=sap-storage-design-considerations#hana-iaas-mx2-16x128-32x256-configure (Updated on 2022-05-19)
-# https://cloud.ibm.com/docs/sap?topic=sap-storage-design-considerations#hana-iaas-mx2-48x384-configure (Updated on 2022-05-19)
+# https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-intel-vs-vpc (Last updated 2023-12-28)
+# https://cloud.ibm.com/docs/sap?topic=sap-storage-design-considerations#hana-iaas-mx2-16x128-32x256-configure (Last updated 2024-01-25)
+# https://cloud.ibm.com/docs/sap?topic=sap-storage-design-considerations#hana-iaas-mx2-48x384-configure (Last updated 2024-01-25)
+# https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-intel-bm-vpc (Last updated 2024-05-13)
+# 
 # SAP Notes:
+# - 2927211 - SAP Applications on IBM Cloud Virtual Private Cloud (VPC) Infrastructure environment (v46)
 # - 2779331 - HANA services use large SWAP memory (v5)
+# LVM physical extent size - https://community.sap.com/t5/additional-blogs-by-sap/using-lvm-for-more-flexibility/ba-p/12871196
+
+- name: Set default JSON file
+  set_fact:
+    hana_vol_setup_json: "hana_vm_volume_layout.json"
+
+- name: Get the appropriate JSON file
+  set_fact:
+    hana_vol_setup_json: "hana_bm_volume_layout.json"
+  when: "'-metal-' in hana_profile"
 
 - name: Check if the JSON file for SAP HANA storage configuration is available on Ansible controller
   stat:
-    path: "{{ playbook_dir }}/hana_volume_layout.json"
+    path: "{{ playbook_dir }}/{{ hana_vol_setup_json }}"
   register: json_storage_file_status
   delegate_to: localhost
 
 - name: Fail if the JSON file is missing
   fail:
-    msg: "The file {{ playbook_dir }}/hana_volume_layout.json is missing."
+    msg: "The file {{ playbook_dir }}/{{ hana_vol_setup_json }} is missing."
   when: not json_storage_file_status.stat.exists
 
 - name: Get the JSON file content
-  shell: "cat {{ playbook_dir }}/hana_volume_layout.json"
+  shell: "cat {{ playbook_dir }}/{{ hana_vol_setup_json }}"
   register: result
   changed_when: false
   when: json_storage_file_status.stat.exists
@@ -42,11 +55,14 @@
     msg: "{{ final_storage }}"
   when: final_storage is not mapping
 
+- name: Display final_storage
+  debug:
+    var: final_storage
+
 - name: Create the volume groups
   lvg:
     vg: "{{ hana_sid | lower }}_{{ stg_details.value.lvm.vg.vg_name }}"
     pvs: "{{ stg_details.value.device | join(',') }}"
-    pesize: "{{ stg_details.value.lvm.vg.pe_size_MB }}"
   loop: "{{ final_storage | dict2items }}"
   loop_control:
     loop_var: stg_details
@@ -57,7 +73,7 @@
     vg: "{{ hana_sid|lower }}_{{ lvm_data[0]['vg_name'] }}"
     lv: "{{ hana_sid|lower }}_{{ lvm_data[0]['lv_name'] }}"
     size: "{{ lvm_data[0]['lv_size'] }}"
-    opts: "-i{{ lvm_data[0]['lv_stripes'] }} -I{{ lvm_data[0]['lv_stripe_size'] }}"
+    opts: "{{ lvm_data[0]['lv_options'] }}"
     shrink: false
   loop: "{{ final_storage | lvmdata }}"
   loop_control:
@@ -74,7 +90,7 @@
     loop_var: part
 
 - name: Create the filesystems
-  filesystem: 
+  filesystem:
     fstype: "{{ fs_data[0]['fs_type'] }}"
     dev: "{{ fs_data[0]['fs_device'] }}"
     opts: "{{ fs_data[0]['fs_options'] }}"
@@ -87,30 +103,27 @@
     path: "{{ mp_data[0]['mp'] }}"
     src: "{{ mp_data[0]['mount_source'] }}"
     fstype: "{{ mp_data[0]['fs_type'] }}"
+    opts: "{{ mp_data[0]['mount_opt'] }}"
     state: mounted
   loop: "{{ [final_storage, hana_sid | lower] | filesystemdata }}"
   loop_control:
     loop_var: mp_data
   when:  mp_data[0]['mp'] != None
 
-- name: Get SWAP LV name
-  set_fact:
-    swap_lv: "{{ swap_data[0]['fs_device'] }}"
-  loop: "{{ [final_storage, hana_sid | lower] | filesystemdata }}"
-  loop_control:
-    loop_var: swap_data
+- name: Create /usr/sap directory on Bare Metal
+  ansible.builtin.file:
+    path: /usr/sap
+    state: directory
+    mode: '0755'
+  when: "'-metal-' in hana_profile"
 
-- name: Check the current SWAP size
-  set_fact:
-    hana_vm_swap: "{{ ansible_swaptotal_mb }}"
+- name: Create SWAP on Bare Metal
+  ansible.builtin.include_tasks:
+    file: swap_bm.yml
+  when: "'-metal-' in hana_profile"
 
-- name: Mount SWAP volume
-  command: "swapon -av {{ swap_lv }}"
-  when: hana_vm_swap == 0
-
-- name: Add SWAP device to /etc/fstab
-  lineinfile:
-    path: /etc/fstab
-    regexp: "^{{ swap_lv }}"
-    line: "{{ swap_lv }}  swap  swap  defaults  0 0"
+- name: Create SWAP on VSI
+  ansible.builtin.include_tasks:
+    file: swap_vm.yml
+  when: "'-metal-' not in hana_profile"
 ...

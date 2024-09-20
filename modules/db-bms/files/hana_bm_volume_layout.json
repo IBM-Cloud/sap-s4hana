@@ -1,0 +1,329 @@
+{
+  "profiles": {
+    "cx2d-metal-96x192": {
+      "storage": {
+        "vg0": {
+          "disk_size": "2980",
+          "disk_count": "4",
+          "lvm": {
+            "vg": {
+              "vg_name": "vg0"
+            },
+            "lv": [
+              {
+                "lv_name": "hana_shared_lv",
+                "raid_type": "raid10",
+                "mirrors": "1",
+                "lv_size": "192",
+                "lv_stripes": "2",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "fs_create_options": "-K",
+                "mount_point": "/hana/shared",
+                "mount_options": "defaults",
+                "label": "HANA_SHARED"
+              },
+              {
+                "lv_name": "hana_log_lv",
+                "raid_type": "raid10",
+                "mirrors": "1",
+                "lv_size": "192",
+                "lv_stripes": "2",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "fs_create_options": "-K",
+                "mount_point": "/hana/log",
+                "mount_options": "defaults,swalloc,inode64",
+                "label": "HANA_LOG"
+              }
+            ]
+          }
+        },
+        "vg1": {
+          "disk_size": "2980",
+          "disk_count": "4",
+          "lvm": {
+            "vg": {
+              "vg_name": "vg1"
+            },
+            "lv": [
+              {
+                "lv_name": "hana_data_lv",
+                "raid_type": "raid10",
+                "mirrors": "1",
+                "lv_size": "100%FREE",
+                "lv_stripes": "2",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "fs_create_options": "-K",
+                "mount_point": "/hana/data",
+                "mount_options": "defaults,largeio,swalloc,inode64",
+                "label": "HANA_DATA"
+              }
+            ]
+          }
+        }
+      },
+      "processing_type": {
+        "sap_business_one": ["sles-15-3", "sles-15-4"]
+      }
+    },
+    "bx2d-metal-96x384": {
+      "storage": {
+        "vg0": {
+          "disk_size": "2980",
+          "disk_count": "4",
+          "lvm": {
+            "vg": {
+              "vg_name": "vg0"
+            },
+            "lv": [
+              {
+                "lv_name": "hana_shared_lv",
+                "raid_type": "raid10",
+                "mirrors": "1",
+                "lv_size": "384",
+                "lv_stripes": "2",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "fs_create_options": "-K",
+                "mount_point": "/hana/shared",
+                "mount_options": "defaults",
+                "label": "HANA_SHARED"
+              },
+              {
+                "lv_name": "hana_log_lv",
+                "raid_type": "raid10",
+                "mirrors": "1",
+                "lv_size": "384",
+                "lv_stripes": "2",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "fs_create_options": "-K",
+                "mount_point": "/hana/log",
+                "mount_options": "defaults,swalloc,inode64",
+                "label": "HANA_LOG"
+              }
+            ]
+          }
+        },
+        "vg1": {
+          "disk_size": "2980",
+          "disk_count": "4",
+          "lvm": {
+            "vg": {
+              "vg_name": "vg1"
+            },
+            "lv": [
+              {
+                "lv_name": "hana_data_lv",
+                "raid_type": "raid10",
+                "mirrors": "1",
+                "lv_size": "100%FREE",
+                "lv_stripes": "2",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "fs_create_options": "-K",
+                "mount_point": "/hana/data",
+                "mount_options": "defaults,largeio,swalloc,inode64",
+                "label": "HANA_DATA"
+              }
+            ]
+          }
+        }
+      },
+      "processing_type": {
+        "oltp": ["sles-15-3", "sles-15-4", "sles-15-5", "redhat-8-4", "redhat-8-6", "redhat-8-8", "redhat-9-0", "redhat-9-2"],
+        "olap": ["sles-15-3", "sles-15-4", "sles-15-5", "redhat-8-4", "redhat-8-6", "redhat-8-8", "redhat-9-0", "redhat-9-2"],
+        "sap_business_one": ["sles-15-3", "sles-15-4", "sles-15-5"]
+      }
+    },
+    "mx2d-metal-96x768": {
+      "storage": {
+        "vg0": {
+          "disk_size": "2980",
+          "disk_count": "4",
+          "lvm": {
+            "vg": {
+              "vg_name": "vg0"
+            },
+            "lv": [
+              {
+                "lv_name": "hana_shared_lv",
+                "raid_type": "raid10",
+                "mirrors": "1",
+                "lv_size": "768",
+                "lv_stripes": "2",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "fs_create_options": "-K",
+                "mount_point": "/hana/shared",
+                "mount_options": "defaults",
+                "label": "HANA_SHARED"
+              },
+              {
+                "lv_name": "hana_log_lv",
+                "raid_type": "raid10",
+                "mirrors": "1",
+                "lv_size": "512",
+                "lv_stripes": "2",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "fs_create_options": "-K",
+                "mount_point": "/hana/log",
+                "mount_options": "defaults,swalloc,inode64",
+                "label": "HANA_LOG"
+              }
+            ]
+          }
+        },
+        "vg1": {
+          "disk_size": "2980",
+          "disk_count": "4",
+          "lvm": {
+            "vg": {
+              "vg_name": "vg1"
+            },
+            "lv": [
+              {
+                "lv_name": "hana_data_lv",
+                "raid_type": "raid10",
+                "mirrors": "1",
+                "lv_size": "100%FREE",
+                "lv_stripes": "2",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "fs_create_options": "-K",
+                "mount_point": "/hana/data",
+                "mount_options": "defaults,largeio,swalloc,inode64",
+                "label": "HANA_DATA"
+              }
+            ]
+          }
+        }
+      },
+      "processing_type": {
+        "oltp": ["sles-15-3", "sles-15-4", "sles-15-5", "redhat-8-4", "redhat-8-6", "redhat-8-8", "redhat-9-0", "redhat-9-2"],
+        "olap": ["sles-15-3", "sles-15-4", "sles-15-5", "redhat-8-4", "redhat-8-6", "redhat-8-8", "redhat-9-0", "redhat-9-2"],
+        "sap_business_one": ["sles-15-3", "sles-15-4", "sles-15-5"]
+      }
+    },
+    "ux2d-metal-112x3072": {
+      "storage": {
+        "vg0": {
+          "disk_size": "2980",
+          "disk_count": "4",
+          "lvm": {
+            "vg": {
+              "vg_name": "vg0"
+            },
+            "lv": [
+              {
+                "lv_name": "hana_shared_lv",
+                "raid_type": "raid10",
+                "mirrors": "1",
+                "lv_size": "3072",
+                "lv_stripes": "2",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "fs_create_options": "-K",
+                "mount_point": "/hana/shared",
+                "label": "HANA_SHARED"
+              },
+              {
+                "lv_name": "hana_log_lv",
+                "raid_type": "raid10",
+                "mirrors": "1",
+                "lv_size": "512",
+                "lv_stripes": "2",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "fs_create_options": "-K",
+                "mount_point": "/hana/log",
+                "mount_options": "defaults,swalloc,inode64",
+                "label": "HANA_LOG"
+              }
+            ]
+          }
+        },
+        "vg1": {
+          "disk_size": "2980",
+          "disk_count": "4",
+          "lvm": {
+            "vg": {
+              "vg_name": "vg1"
+            },
+            "lv": [
+              {
+                "lv_name": "hana_data_lv",
+                "raid_type": "raid10",
+                "mirrors": "1",
+                "lv_size": "100%FREE",
+                "lv_stripes": "2",
+                "lv_stripe_size": "64",
+                "fs_type": "xfs",
+                "fs_create_options": "-K",
+                "mount_point": "/hana/data",
+                "mount_options": "defaults,largeio,swalloc,inode64",
+                "label": "HANA_DATA"
+              }
+            ]
+          }
+        }
+      },
+      "processing_type": {
+        "oltp": ["sles-15-3", "sles-15-4", "sles-15-5", "redhat-8-4", "redhat-8-6", "redhat-8-8", "redhat-9-0", "redhat-9-2"],
+        "olap": ["sles-15-3", "sles-15-4", "sles-15-5", "redhat-8-4", "redhat-8-6", "redhat-8-8", "redhat-9-0", "redhat-9-2"]
+      }
+    },
+    "ux2d-metal-224x6144": {
+      "storage": {
+        "vg0": {
+          "disk_size": "23838",
+          "disk_count": "2",
+          "lvm": {
+            "vg": {
+              "vg_name": "vg0"
+            },
+            "lv": [
+              {
+                "lv_name": "hana_shared_lv",
+                "raid_type": "raid1",
+                "lv_size": "6144",
+                "fs_type": "xfs",
+                "fs_create_options": "-K",
+                "mount_point": "/hana/shared",
+                "mount_options": "defaults",
+                "label": "HANA_SHARED"
+              },
+              {
+                "lv_name": "hana_log_lv",
+                "raid_type": "raid1",
+                "lv_size": "512",
+                "fs_type": "xfs",
+                "fs_create_options": "-K",
+                "mount_point": "/hana/log",
+                "mount_options": "defaults,swalloc,inode64",
+                "label": "HANA_LOG"
+              },
+              {
+                "lv_name": "hana_data_lv",
+                "raid_type": "raid1",
+                "lv_size": "100%FREE",
+                "fs_type": "xfs",
+                "fs_create_options": "-K",
+                "mount_point": "/hana/data",
+                "mount_options": "defaults,largeio,swalloc,inode64",
+                "label": "HANA_DATA"
+              }
+            ]
+          }
+        }
+      },
+      "processing_type": {
+        "oltp": ["sles-15-3", "sles-15-4", "sles-15-5", "redhat-8-4", "redhat-8-6", "redhat-8-8", "redhat-9-0", "redhat-9-2"],
+        "olap": ["sles-15-3", "sles-15-4", "sles-15-5", "redhat-8-4", "redhat-8-6", "redhat-8-8", "redhat-9-0", "redhat-9-2"]
+      }
+    }
+  }
+}

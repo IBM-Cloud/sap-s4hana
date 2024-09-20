@@ -30,7 +30,7 @@ resource "ibm_is_instance" "vsi" {
 
   primary_network_interface {
     subnet          = data.ibm_is_subnet.subnet.id
-    security_groups = [data.ibm_is_security_group.securitygroup.id]
+    security_groups = [ data.ibm_is_security_group.securitygroup.id ]
   }
   volumes = ibm_is_volume.vol[*].id
 

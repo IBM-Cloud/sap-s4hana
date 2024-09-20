@@ -1,78 +1,92 @@
+resource "null_resource" "check-target-connection" {
+  connection {
+    bastion_host = var.BASTION_FLOATING_IP
+    host         = var.IP
+    user         = "root"
+    private_key  = var.PRIVATE_SSH_KEY
+    timeout = "15m"
+  }
+
+  provisioner "remote-exec" {
+    inline = ["echo 'Connection established with target!'"]
+  }
+}
+
 resource "null_resource" "ansible-exec" {
 
-    connection {
-      type = "ssh"
-      user = "root"
-      host = var.BASTION_FLOATING_IP
-      private_key = var.PRIVATE_SSH_KEY
-      timeout = "2m"
-    }
+  depends_on = [null_resource.check-target-connection]
 
+  connection {
+    type = "ssh"
+    user = "root"
+    host = var.BASTION_FLOATING_IP
+    private_key = var.PRIVATE_SSH_KEY
+    timeout = "10m"
+  }
 
-    provisioner "file" {
-      source      = "ansible"
-      destination = "/tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}"
-    }
+  provisioner "file" {
+    source      = "ansible"
+    destination = "/tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}"
+  }
 
-    provisioner "file" {
-      source      = "${var.ID_RSA_FILE_PATH}"
-      destination = "/tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/id_rsa"
-    }
+  provisioner "file" {
+    source      = "${var.ID_RSA_FILE_PATH}"
+    destination = "/tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/id_rsa"
+  }
 
-    provisioner "remote-exec" {
-      inline = [
-        "chmod 600 /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/id_rsa",
-      ]
-    }
+  provisioner "remote-exec" {
+    inline = [
+      "chmod 600 /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/id_rsa",
+    ]
+  }
 
-    provisioner "file" {
-      source      = "modules/ansible-exec/check.ansible.sh"
-      destination = "/tmp/${var.IP}.check.ansible.sh"
-    }
+  provisioner "file" {
+    source      = "modules/ansible-exec/check.ansible.sh"
+    destination = "/tmp/${var.IP}.check.ansible.sh"
+  }
 
-    provisioner "remote-exec" {
-      inline = [
-        "chmod +x /tmp/${var.IP}.check.ansible.sh",
-      ]
-    }
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/${var.IP}.check.ansible.sh",
+    ]
+  }
 
- provisioner "file" {
+  provisioner "file" {
       source      = "modules/ansible-exec/timeout.ansible.sh"
       destination = "/tmp/${var.IP}.timeout.ansible.sh"
     }
 
-    provisioner "remote-exec" {
-      inline = [
-        "chmod +x /tmp/${var.IP}.timeout.ansible.sh",
-      ]
-    }
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/${var.IP}.timeout.ansible.sh",
+    ]
+  }
 
-    provisioner "file" {
-      source      = "modules/ansible-exec/while.sh"
-      destination = "/tmp/${var.IP}.while.sh"
-    }
+  provisioner "file" {
+    source      = "modules/ansible-exec/while.sh"
+    destination = "/tmp/${var.IP}.while.sh"
+  }
 
-    provisioner "remote-exec" {
-      inline = [
-        "chmod +x /tmp/${var.IP}.while.sh",
-      ]
-    }
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/${var.IP}.while.sh",
+    ]
+  }
 
-    provisioner "file" {
-      source      = "modules/ansible-exec/error.sh"
-      destination = "/tmp/${var.IP}.error.sh"
-    }
+  provisioner "file" {
+    source      = "modules/ansible-exec/error.sh"
+    destination = "/tmp/${var.IP}.error.sh"
+  }
 
-    provisioner "remote-exec" {
-      inline = [
-        "chmod +x /tmp/${var.IP}.error.sh",
-      ]
-    }
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/${var.IP}.error.sh",
+    ]
+  }
 
-    provisioner "local-exec" {
-          command = "ssh -o 'StrictHostKeyChecking no' -i ${var.ID_RSA_FILE_PATH} root@${var.BASTION_FLOATING_IP} 'export ANSIBLE_CONFIG=/tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/ansible.cfg; nohup ansible-playbook --private-key /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/id_rsa -i /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/inventory.yml /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/${var.PLAYBOOK} > /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}.log 2>&1 &'"
-    }
-
+  provisioner "local-exec" {
+        command = "ssh -o 'StrictHostKeyChecking no' -i ${var.ID_RSA_FILE_PATH} root@${var.BASTION_FLOATING_IP} 'export ANSIBLE_CONFIG=/tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/ansible.cfg; nohup ansible-playbook --private-key /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/id_rsa -i /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/inventory.yml /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}/${var.PLAYBOOK} > /tmp/ansible.${local.SAP_DEPLOYMENT}-${var.IP}.log 2>&1 &'"
+  }
 }
 
 resource "null_resource" "check-ansible" {

@@ -1,0 +1,22 @@
+--- 
+- name: Get SWAP LV name
+  set_fact:
+    swap_lv: "{{ swap_data[0]['fs_device'] }}"
+  loop: "{{ [final_storage, hana_sid | lower] | filesystemdata }}"
+  loop_control:
+    loop_var: swap_data
+
+- name: Check the current SWAP size
+  set_fact:
+    hana_swap: "{{ ansible_swaptotal_mb }}"
+
+- name: Mount SWAP volume
+  command: "swapon -av {{ swap_lv }}"
+  when: hana_swap == 0
+
+- name: Add SWAP device to /etc/fstab
+  lineinfile:
+    path: /etc/fstab
+    regexp: "^{{ swap_lv }}"
+    line: "{{ swap_lv }}  swap  swap  defaults  0 0"
+...

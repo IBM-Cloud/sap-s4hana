@@ -3,12 +3,15 @@ saphana_required_packages:
   - libgcc_s1
   - libstdc++6
   - libatomic1
+  - lvm2
+  - uuidd
+  - nfs-utils
+
 saphana_required_configurations:
   - "reqpkg"
   - "kernel_SLES_SAP15"
   - "filesystems"
   - "tmpfs"
   - "saptune"
-  - "limits"
   - "reboot"
-... 
+...

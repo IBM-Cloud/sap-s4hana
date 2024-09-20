@@ -1,0 +1,15 @@
+---
+- name: Check if TSX parameter is configured in the boot command
+  lineinfile:
+    backup: true
+    path: /etc/default/grub
+    regexp: '^GRUB_CMDLINE_LINUX=".*tsx=on'
+    state: absent
+  check_mode: true
+  register: tsx_check
+  changed_when: false
+
+- name: Enable TSX
+  command: grubby --args="tsx=on" --update-kernel=ALL
+  when: tsx_check.found == 0
+...

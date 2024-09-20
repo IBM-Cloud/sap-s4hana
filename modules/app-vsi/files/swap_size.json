@@ -1,0 +1,52 @@
+[
+    {
+        "ram_min": 0,
+        "ram_max": 31,
+        "swap_size": 48
+    },
+    {
+        "ram_min": 32,
+        "ram_max": 63,
+        "swap_size": 64
+    },
+    {
+        "ram_min": 64,
+        "ram_max": 127,
+        "swap_size": 96
+    },
+    {
+        "ram_min": 128,
+        "ram_max": 255,
+        "swap_size": 128
+    },
+    {
+        "ram_min": 256,
+        "ram_max": 511,
+        "swap_size": 160
+    },
+    {
+        "ram_min": 512,
+        "ram_max": 1023,
+        "swap_size": 192
+    },
+    {
+        "ram_min": 1024,
+        "ram_max": 2047,
+        "swap_size": 224
+    },
+    {
+        "ram_min": 2048,
+        "ram_max": 4095,
+        "swap_size": 256
+    },
+    {
+        "ram_min": 4096,
+        "ram_max": 8191,
+        "swap_size": 288
+    },
+    {
+        "ram_min": 8192,
+        "ram_max": 20000,
+        "swap_size": 320
+    }
+]

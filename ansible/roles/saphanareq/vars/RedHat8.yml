@@ -30,6 +30,8 @@ saphana_required_packages:
 saphana_required_configurations:
   - "reqpkg"
   - "kernel_RedHat8"
+  - "c_states"
+  - "tsx"
   - "filesystems"
   - "tmpfs"
   - "tuned"

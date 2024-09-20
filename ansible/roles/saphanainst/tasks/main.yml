@@ -16,6 +16,18 @@
   shell: "{{ hana_kit }}/DATA_UNITS/HDB_SERVER_LINUX_X86_64/hdblcm --configfile={{ hana_kit }}/hanaconfig.cfg -b"
   when: not hdb_install_status.stat.exists
 
+- name: Check if SAP HANA Tenant 
+  shell: |
+    set -o pipefail
+    su - {{ hana_sid|lower }}adm -c "hdbnsutil -printsysteminformation | grep -v SYSTEMDB"
+  register: sysinfo_cmd
+  changed_when: false
+
+- name: Create SAP HANA Tenant if it doesn't exist
+  shell: su - {{ hana_sid|lower }}adm -c "hdbsql -d SYSTEMDB -u SYSTEM -p \"{{ hana_main_password }}\" -i {{ hana_sysno }} \"CREATE DATABASE {{ hana_tenant | upper }} SYSTEM USER PASSWORD \\\"{{ hana_main_password }}\\\"\""
+  no_log: true
+  when: hana_tenant | upper not in sysinfo_cmd.stdout
+
 - name: Cleanup
   file:
     path: "{{ hana_kit }}"

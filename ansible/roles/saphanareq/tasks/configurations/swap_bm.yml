@@ -1,0 +1,33 @@
+---
+- name: Check for the SWAP space
+  stat:
+    path: "/{{ hana_sid|lower }}_swapfile"
+  register: swap_space
+
+- name: Create SWAP space
+  command: dd if=/dev/zero of=/{{ hana_sid|lower }}_swapfile bs=1048576 count=2048
+  when: not swap_space.stat.exists
+
+- name: Set permission on SWAP file
+  ansible.builtin.file:
+    path: "/{{ hana_sid|lower }}_swapfile"
+    mode: 0600
+
+- name: Create SWAP filesystem
+  command: mkswap /{{ hana_sid|lower }}_swapfile
+  when: not swap_space.stat.exists
+  
+- name: Check the current SWAP size
+  set_fact:
+    hana_swap: "{{ ansible_swaptotal_mb }}"
+
+- name: Mount SWAP volume
+  command: "swapon -av /{{ hana_sid|lower }}_swapfile"
+  when: hana_swap == 0
+
+- name: Add SWAP device to /etc/fstab
+  lineinfile:
+    path: /etc/fstab
+    regexp: "^\\/{{ hana_sid|lower }}_swapfile"
+    line: "/{{ hana_sid|lower }}_swapfile  swap  swap  defaults  0 0"
+...

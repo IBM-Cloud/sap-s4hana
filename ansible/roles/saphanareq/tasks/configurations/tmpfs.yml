@@ -4,9 +4,15 @@
 # - 2772999 - Red Hat Enterprise Linux 8.x: Installation and Configuration (v22)
 # - 941735 - SAP memory management system for 64-bit Linux systems (v11)
 
-- name: Get the RAM size
+- name: Get the RAM size for VSI
   set_fact:
     hana_ram_g: "{{ hana_profile.split('-')[1].split('x')[1] }}"
+  when: "'-metal-' not in hana_profile"
+
+- name: Get the RAM size for Bare Metal
+  set_fact:
+    hana_ram_g: "{{ hana_profile.split('-')[2].split('x')[1] }}"
+  when: "'-metal-' in hana_profile"
 
 - name: Set swap logical volume size for RAM higher than 8192
   set_fact:
